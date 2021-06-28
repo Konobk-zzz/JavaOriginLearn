@@ -551,6 +551,8 @@ public class Object {
      * {@link java.lang.Object#notifyAll()} method for this object.
      * In other words, this method behaves exactly as if it simply
      * performs the call {@code wait(0)}.
+     * 致使当前线程进入等待状态直到其他线程调用当前对象的 notify() 或 notifyAll() 方法。
+     * 换句话说，这个方法执行就是简单的调用 wait(0)
      * <p>
      * The current thread must own this object's monitor. The thread
      * releases ownership of this monitor and waits until another thread
@@ -558,6 +560,9 @@ public class Object {
      * either through a call to the {@code notify} method or the
      * {@code notifyAll} method. The thread then waits until it can
      * re-obtain ownership of the monitor and resumes execution.
+     * 当前线程必须拥有当前对象的监视器。线程释放这个监视器的所有券 并且 等待 直到
+     * 其他线程唤醒这些等待这个监视器的线程，通过调用 notify() 或 notifyAll()
+     * 方法中的一个实现。线程等待直到他可以重新拥有这个监视器的所有权并且恢复执行。
      * <p>
      * As in the one argument version, interrupts and spurious wakeups are
      * possible, and this method should always be used in a loop:
@@ -592,6 +597,8 @@ public class Object {
      * determines that there are no more references to the object.
      * A subclass overrides the {@code finalize} method to dispose of
      * system resources or to perform other cleanup.
+     * 该方法在当前对象没有被引用时，被垃圾收集器调用。子类可以覆写这个方法来处理系统资源
+     * 或执行其他的清理。
      * <p>
      * The general contract of {@code finalize} is that it is invoked
      * if and when the Java&trade; virtual
@@ -606,10 +613,17 @@ public class Object {
      * for an object that represents an input/output connection might perform
      * explicit I/O transactions to break the connection before the object is
      * permanently discarded.
+     * 该方法的一般约定是当JVM认为当前可以被任何线程访问的对象不再有任何意义时当前对象还没有死亡
+     * 除了是由于其他对象或类的终结，他已经准备好被终结。 finalize 方法可能带来任一行为，包括
+     * 使当前对象再次可用于其他线程；finalize 常见的目的，无论怎么样，它在当前对象被不可恢复的
+     * 废弃前用作清理。举个例子，一个表示输入/输出连接的对象可能执行明确的I/O
+     * 处理，对象永久销毁之前 finalize 方法会关闭连接。
+     *
      * <p>
      * The {@code finalize} method of class {@code Object} performs no
      * special action; it simply returns normally. Subclasses of
      * {@code Object} may override this definition.
+     * Object类的finalize方法不会执行特殊的行为；它只是简单的返回。子类可以覆写定义它。
      * <p>
      * The Java programming language does not guarantee which thread will
      * invoke the {@code finalize} method for any given object. It is
@@ -617,6 +631,10 @@ public class Object {
      * be holding any user-visible synchronization locks when finalize is
      * invoked. If an uncaught exception is thrown by the finalize method,
      * the exception is ignored and finalization of that object terminates.
+     * JAVA 不保证哪一个线程将会调用给定对象的 finalize 方法。可以保证的是，无论如何，
+     * 当finalize被线程调用的时候不会持有任何用户可见的同步锁。如果一个未捕获的异常在
+     * finalize 方法中抛出，这个异常将会被忽视 并且 将会使这个对象被终止。
+     *
      * <p>
      * After the {@code finalize} method has been invoked for an object, no
      * further action is taken until the Java virtual machine has again
@@ -624,13 +642,19 @@ public class Object {
      * be accessed by any thread that has not yet died, including possible
      * actions by other objects or classes which are ready to be finalized,
      * at which point the object may be discarded.
+     * 当对象的 finalize 方法被调用之后，没有带来更多的行为直到JVM再次认为这个可以被任何线程
+     * 访问但还没有死亡的对象没有任何意义，包括可能的行为是其他对象或类已经准备被终止，
+     * 来表明当前对象可能被终止。
+     *
      * <p>
      * The {@code finalize} method is never invoked more than once by a Java
      * virtual machine for any given object.
+     * 对于任何对象JVM从来都不会调用 finalize 方法超过一次
      * <p>
      * Any exception thrown by the {@code finalize} method causes
      * the finalization of this object to be halted, but is otherwise
      * ignored.
+     * 任何finalize 方法抛出的异常都会导致 对象停止，但是异常会被忽视。
      *
      * @throws Throwable the {@code Exception} raised by this method
      * @see java.lang.ref.WeakReference
