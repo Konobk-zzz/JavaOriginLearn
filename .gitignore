@@ -41,3 +41,6 @@ bin/
 # system ignore
 .DS_Store
 Thumbs.db
+
+# out
+out/
