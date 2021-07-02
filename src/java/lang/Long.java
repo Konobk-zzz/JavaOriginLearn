@@ -33,17 +33,21 @@ import java.math.*;
  * The {@code Long} class wraps a value of the primitive type {@code
  * long} in an object. An object of type {@code Long} contains a
  * single field whose type is {@code long}.
+ * Long类包含一个对象中原始类型long的值。 类型为Long的对象包含一个单一字段，其类型为long 。
  *
  * <p> In addition, this class provides several methods for converting
  * a {@code long} to a {@code String} and a {@code String} to a {@code
  * long}, as well as other constants and methods useful when dealing
  * with a {@code long}.
+ * 此外，该类还提供了一些将long转换为String和String转换为long ，以及在处理long时有用的其他常量和方法。
  *
  * <p>Implementation note: The implementations of the "bit twiddling"
  * methods (such as {@link #highestOneBit(long) highestOneBit} and
  * {@link #numberOfTrailingZeros(long) numberOfTrailingZeros}) are
  * based on material from Henry S. Warren, Jr.'s <i>Hacker's
  * Delight</i>, (Addison Wesley, 2002).
+ * 实施说明：“bit twiddling”方法（例如highestOneBit和numberOfTrailingZeros ）的实现基于
+ * Henry S. Warren，Jr.的Hacker's Delight （Addison Wesley，2002）的材料。
  *
  * @author  Lee Boynton
  * @author  Arthur van Hoff
@@ -147,21 +151,26 @@ public final class Long extends Number implements Comparable<Long> {
      * Returns a string representation of the first argument as an
      * unsigned integer value in the radix specified by the second
      * argument.
+     * 以第二个参数指定的基数中的无符号整数值返回第一个参数的字符串表示形式。
      *
      * <p>If the radix is smaller than {@code Character.MIN_RADIX}
      * or larger than {@code Character.MAX_RADIX}, then the radix
      * {@code 10} is used instead.
+     * 如果基数小于Character.MIN_RADIX或大于Character.MAX_RADIX ，则使用基数10 。
      *
      * <p>Note that since the first argument is treated as an unsigned
      * value, no leading sign character is printed.
+     * 请注意，由于第一个参数被视为无符号值，因此不会打印前导符号。
      *
      * <p>If the magnitude is zero, it is represented by a single zero
      * character {@code '0'} ({@code '\u005Cu0030'}); otherwise,
      * the first character of the representation of the magnitude will
      * not be the zero character.
+     * 如果幅度为零，则由单个零字符'0' （ '\u0030' ）表示; 否则，幅度的表示的第一个字符将不是零字符。
      *
      * <p>The behavior of radixes and the characters used as digits
      * are the same as {@link #toString(long, int) toString}.
+     * 基数的行为和用作数字的字符与toString相同。
      *
      * @param   i       an integer to be converted to an unsigned string.
      * @param   radix   the radix to use in the string representation.
@@ -211,6 +220,7 @@ public final class Long extends Number implements Comparable<Long> {
     /**
      * Return a BigInteger equal to the unsigned value of the
      * argument.
+     * 返回一个等于入参无符号值的BigInteger
      */
     private static BigInteger toUnsignedBigInteger(long i) {
         if (i >= 0L)
@@ -1528,6 +1538,7 @@ public final class Long extends Number implements Comparable<Long> {
      * Returns the value obtained by reversing the order of the bits in the
      * two's complement binary representation of the specified {@code long}
      * value.
+     * 返回由指定的二进制补码表示反转位的顺序而获得的值 long值。
      *
      * @param i the value to be reversed
      * @return the value obtained by reversing order of the bits in the
