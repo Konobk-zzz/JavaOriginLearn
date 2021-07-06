@@ -45,8 +45,8 @@ public class FloatTest {
 //        testInstanceIsNew();
 //        testFloatToIntBits();
 //        testM(1);
-        System.out.println("intBitsToFloatCopy(8388608) : " + intBitsToFloatCopy(8388608));
-        System.out.println("Float.intBitsToFloat(8388608) : " + Float.intBitsToFloat(8388608));
+        System.out.println("intBitsToFloatCopy(1065353216) : " + intBitsToFloatCopy(1065353216));
+        System.out.println("Float.intBitsToFloat(1065353216) : " + Float.intBitsToFloat(1065353216));
         System.out.println(Float.floatToIntBits(1.0F));
     }
 }
