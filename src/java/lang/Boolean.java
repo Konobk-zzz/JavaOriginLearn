@@ -30,12 +30,14 @@ package java.lang;
  * {@code boolean} in an object. An object of type
  * {@code Boolean} contains a single field whose type is
  * {@code boolean}.
+ * 布尔类将对象中的基元类型boolean的值进行包装。 类型为Boolean的对象包含一个单一字段，其类型为boolean 。
  * <p>
  * In addition, this class provides many methods for
  * converting a {@code boolean} to a {@code String} and a
  * {@code String} to a {@code boolean}, as well as other
  * constants and methods useful when dealing with a
  * {@code boolean}.
+ * 此外，该类还提供了许多将boolean转换为String和String转换为boolean ，以及在处理boolean时有用的其他常量和方法。
  *
  * @author  Arthur van Hoff
  * @since   JDK1.0
@@ -46,17 +48,20 @@ public final class Boolean implements java.io.Serializable,
     /**
      * The {@code Boolean} object corresponding to the primitive
      * value {@code true}.
+     * Boolean对象对应于原始值 true 。
      */
     public static final Boolean TRUE = new Boolean(true);
 
     /**
      * The {@code Boolean} object corresponding to the primitive
      * value {@code false}.
+     * Boolean对象对应于原始值 false 。
      */
     public static final Boolean FALSE = new Boolean(false);
 
     /**
      * The Class object representing the primitive type boolean.
+     * 表示原始类型的类对象布尔值。
      *
      * @since   JDK1.1
      */
@@ -76,11 +81,13 @@ public final class Boolean implements java.io.Serializable,
     /**
      * Allocates a {@code Boolean} object representing the
      * {@code value} argument.
+     * 分配一个Boolean value参数的Boolean对象。
      *
      * <p><b>Note: It is rarely appropriate to use this constructor.
      * Unless a <i>new</i> instance is required, the static factory
      * {@link #valueOf(boolean)} is generally a better choice. It is
      * likely to yield significantly better space and time performance.</b>
+     * 注意：很少使用这个构造函数。 除非需要新的实例，静态工厂valueOf(boolean)通常是一个更好的选择。 它可能产生明显更好的空间和时间性能。
      *
      * @param   value   the value of the {@code Boolean}.
      */
@@ -98,6 +105,11 @@ public final class Boolean implements java.io.Serializable,
      * that represents {@code true}.<br>
      * {@code new Boolean("yes")} produces a {@code Boolean} object
      * that represents {@code false}.
+     * 如果字符串参数不是null并且等于忽略大小写，则分配一个Boolean对象，表示值为true ，
+     * 否则返回到字符串"true" 。 否则，分配一个Boolean对象，代表值false 。 例子：
+     *
+     * new Boolean("True")生成一个Boolean对象，代表true 。
+     * new Boolean("yes")生成一个Boolean对象，代表false 。
      *
      * @param   s   the string to be converted to a {@code Boolean}.
      */
@@ -110,8 +122,13 @@ public final class Boolean implements java.io.Serializable,
      * returned represents the value {@code true} if the string argument
      * is not {@code null} and is equal, ignoring case, to the string
      * {@code "true"}. <p>
+     * 将字符串参数解析为布尔值。 boolean返回的代表值为true如果字符串参数不是null ，并且等于，忽略大小写，到字符串"true" 。
+     *
      * Example: {@code Boolean.parseBoolean("True")} returns {@code true}.<br>
+     * 示例： Boolean.parseBoolean("True")返回true 。
+     *
      * Example: {@code Boolean.parseBoolean("yes")} returns {@code false}.
+     * 示例： Boolean.parseBoolean("yes")返回false 。
      *
      * @param      s   the {@code String} containing the boolean
      *                 representation to be parsed
@@ -125,6 +142,7 @@ public final class Boolean implements java.io.Serializable,
     /**
      * Returns the value of this {@code Boolean} object as a boolean
      * primitive.
+     * 将此 Boolean对象的值作为布尔基元返回。
      *
      * @return  the primitive {@code boolean} value of this object.
      */
@@ -141,6 +159,10 @@ public final class Boolean implements java.io.Serializable,
      * should generally be used in preference to the constructor
      * {@link #Boolean(boolean)}, as this method is likely to yield
      * significantly better space and time performance.
+     * 返回一个Boolean指定的boolean值的Boolean实例。 如果指定的boolean值为true ，
+     * 此方法返回Boolean.TRUE ; 如果是false ，此方法返回Boolean.FALSE 。
+     * 如果不需要新的Boolean实例，则该方法通常优先于构造函数Boolean(boolean)使用 ，
+     * 因为该方法可能会产生明显更好的空间和时间性能。
      *
      * @param  b a boolean value.
      * @return a {@code Boolean} instance representing {@code b}.

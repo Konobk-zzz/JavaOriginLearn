@@ -36,11 +36,15 @@ import java.util.function.Supplier;
  * copy of the variable.  {@code ThreadLocal} instances are typically private
  * static fields in classes that wish to associate state with a thread (e.g.,
  * a user ID or Transaction ID).
+ * 这个类提供线程局部变量。 这些变量与其正常的对应方式不同，因为访问一个的每个线程（通过其get或set方法）
+ * 都有自己独立初始化的变量副本。 ThreadLocal实例通常是希望将状态与线程关联的类中的私有静态字段（例如，用户ID或事务ID）。
  *
  * <p>For example, the class below generates unique identifiers local to each
  * thread.
  * A thread's id is assigned the first time it invokes {@code ThreadId.get()}
  * and remains unchanged on subsequent calls.
+ * 例如，下面的类生成每个线程本地的唯一标识符。
+ * 线程的ID在第一次调用ThreadId.get()时被分配，并在后续调用中保持不变。
  * <pre>
  * import java.util.concurrent.atomic.AtomicInteger;
  *
@@ -67,6 +71,8 @@ import java.util.function.Supplier;
  * instance is accessible; after a thread goes away, all of its copies of
  * thread-local instances are subject to garbage collection (unless other
  * references to these copies exist).
+ * 只要线程存活并且ThreadLocal实例可以访问，每个线程都保存对其线程局部变量副本的隐式引用;
+ * 线程消失后，线程本地实例的所有副本都将被垃圾收集（除非存在对这些副本的其他引用）。
  *
  * @author  Josh Bloch and Doug Lea
  * @since   1.2
@@ -114,12 +120,17 @@ public class ThreadLocal<T> {
      * be invoked for the thread.  Normally, this method is invoked at
      * most once per thread, but it may be invoked again in case of
      * subsequent invocations of {@link #remove} followed by {@link #get}.
+     * 返回此线程局部变量的当前线程的“初始值”。 该方法将在第一次使用get()方法访问变量时被调用，
+     * 除非线程先前调用了set(T)方法，在这种情况下， initialValue方法将不会被调用。
+     * 通常情况下，这种方法最多每个线程调用一次，但它可能会再次在以后的调用的情况下调用remove()其次是get() 。
      *
      * <p>This implementation simply returns {@code null}; if the
      * programmer desires thread-local variables to have an initial
      * value other than {@code null}, {@code ThreadLocal} must be
      * subclassed, and this method overridden.  Typically, an
      * anonymous inner class will be used.
+     * 这个实现简单地返回null ; 如果程序员希望线程局部变量具有除null之外的初始值，
+     * 则ThreadLocal必须被子类化，并且该方法被覆盖。 通常，将使用匿名内部类。
      *
      * @return the initial value for this thread-local
      */
@@ -130,6 +141,7 @@ public class ThreadLocal<T> {
     /**
      * Creates a thread local variable. The initial value of the variable is
      * determined by invoking the {@code get} method on the {@code Supplier}.
+     * 创建线程局部变量。 变量的初始值是通过调用get方法来Supplier 。
      *
      * @param <S> the type of the thread local's value
      * @param supplier the supplier to be used to determine the initial value
@@ -153,6 +165,8 @@ public class ThreadLocal<T> {
      * thread-local variable.  If the variable has no value for the
      * current thread, it is first initialized to the value returned
      * by an invocation of the {@link #initialValue} method.
+     * 返回当前线程的此线程局部变量的副本中的值。 如果变量没有当前线程的值，
+     * 则首先将其初始化为调用initialValue()方法返回的值。
      *
      * @return the current thread's value of this thread-local
      */
@@ -213,6 +227,9 @@ public class ThreadLocal<T> {
      * unless its value is {@linkplain #set set} by the current thread
      * in the interim.  This may result in multiple invocations of the
      * {@code initialValue} method in the current thread.
+     * 删除此线程局部变量的当前线程的值。 如果此线程本地变量随后是当前线程的read ，
+     * 则其值将通过调用其initialValue()方法重新初始化 ，除非其当前线程的值为set 。
+     * 这可能导致当前线程中的initialValue方法的多次调用。
      *
      * @since 1.5
      */
@@ -406,6 +423,8 @@ public class ThreadLocal<T> {
          * key. It otherwise relays to getEntryAfterMiss.  This is
          * designed to maximize performance for direct hits, in part
          * by making this method readily inlinable.
+         * 获取与键关联的条目。此方法本身只处理快速路径：直接命中现有键。
+         * 否则它会传递给getEntryAfterMiss。这是为了最大限度地提高直接命中的性能而设计的，部分原因是使此方法易于内联。
          *
          * @param  key the thread local object
          * @return the entry associated with key, or null if no such
@@ -422,6 +441,7 @@ public class ThreadLocal<T> {
         /**
          * Version of getEntry method for use when key is not found in
          * its direct hash slot.
+         * getEntry方法在其直接哈希槽中找不到键时使用的的版本。
          *
          * @param  key the thread local object
          * @param  i the table index for key's hash code
@@ -507,10 +527,13 @@ public class ThreadLocal<T> {
          * with an entry for the specified key.  The value passed in
          * the value parameter is stored in the entry, whether or not
          * an entry already exists for the specified key.
+         * 用指定键的项替换设置操作期间遇到的过时项。
+         * 在value参数中传递的值存储在条目中，无论指定键的条目是否已存在。
          *
          * As a side effect, this method expunges all stale entries in the
          * "run" containing the stale entry.  (A run is a sequence of entries
          * between two null slots.)
+         * 作为一个副作用，此方法将删除“run”中包含过时条目的所有过时条目(运行是两个空插槽之间的条目序列。）
          *
          * @param  key the key
          * @param  value the value to be associated with key
@@ -527,6 +550,7 @@ public class ThreadLocal<T> {
             // We clean out whole runs at a time to avoid continual
             // incremental rehashing due to garbage collector freeing
             // up refs in bunches (i.e., whenever the collector runs).
+            // 备份以检查当前运行中先前的陈旧条目。我们一次清除整个运行，以避免由于垃圾收集器成束地释放引用（即，每当收集器运行时）而导致的持续增量重新散列。
             int slotToExpunge = staleSlot;
             for (int i = prevIndex(staleSlot, len);
                  (e = tab[i]) != null;
@@ -536,6 +560,7 @@ public class ThreadLocal<T> {
 
             // Find either the key or trailing null slot of run, whichever
             // occurs first
+            // 找到 run 的键或尾随空槽，以先发生者为准
             for (int i = nextIndex(staleSlot, len);
                  (e = tab[i]) != null;
                  i = nextIndex(i, len)) {
@@ -546,6 +571,8 @@ public class ThreadLocal<T> {
                 // The newly stale slot, or any other stale slot
                 // encountered above it, can then be sent to expungeStaleEntry
                 // to remove or rehash all of the other entries in run.
+                // 如果我们找到键，那么我们需要将它与陈旧条目交换以维护哈希表顺序。
+                // 然后可以将新的陈旧槽或在其上方遇到的任何其他陈旧槽发送到 expungeStaleEntry 以删除或重新散列运行中的所有其他条目。
                 if (k == key) {
                     e.value = value;
 
@@ -562,6 +589,7 @@ public class ThreadLocal<T> {
                 // If we didn't find stale entry on backward scan, the
                 // first stale entry seen while scanning for key is the
                 // first still present in the run.
+                // 如果我们没有在后向扫描上找到陈旧的Entry，则在扫描键时看到的第一个陈旧的Entry是仍然存在于运行中的第一个仍然存在。
                 if (k == null && slotToExpunge == staleSlot)
                     slotToExpunge = i;
             }
@@ -580,6 +608,9 @@ public class ThreadLocal<T> {
          * lying between staleSlot and the next null slot.  This also expunges
          * any other stale entries encountered before the trailing null.  See
          * Knuth, Section 6.4
+         * 通过重新哈希位于staleSlot和下一个空插槽之间的任何可能发生冲突的条目来删除过时条目。
+         * 这还将删除在尾部null之前遇到的任何其他过时条目。见Knuth，第6.4节
+         *
          *
          * @param staleSlot index of slot known to have null key
          * @return the index of the next null slot after staleSlot
@@ -613,6 +644,7 @@ public class ThreadLocal<T> {
 
                         // Unlike Knuth 6.4 Algorithm R, we must scan until
                         // null because multiple entries could have been stale.
+                        // 与Knuth 6.4算法R不同，我们必须扫描直到null，因为多个条目可能已经陈旧。
                         while (tab[h] != null)
                             h = nextIndex(h, len);
                         tab[h] = e;
@@ -630,6 +662,9 @@ public class ThreadLocal<T> {
          * scanning (fast but retains garbage) and a number of scans
          * proportional to number of elements, that would find all
          * garbage but would cause some insertions to take O(n) time.
+         * 启发式扫描一些寻找陈旧条目。当添加新元素时，可以调用此功能，或者已删除另一个陈旧。
+         * 它执行对数数的扫描数量，因为没有扫描（快速但保留垃圾）之间的平衡和与元素数量成比例的扫描，
+         * 那将找到所有垃圾，但会导致一些插入消耗O（n）时间。
          *
          * @param i a position known NOT to hold a stale entry. The
          * scan starts at the element after i.
@@ -643,6 +678,11 @@ public class ThreadLocal<T> {
          * more or less aggressive by weighting n instead of just
          * using straight log n. But this version is simple, fast, and
          * seems to work well.)
+         *          扫描控制：{@code log2（n）}扫描单元格，除非找到了陈旧条目，
+         *          在这种情况下{@code log2（table.length）-1}扫描其他小区。
+         *          从插入调用时，此参数是元素的数量，但从替换时，它是表格长度。
+         *          （注意：所有这些都可以通过加权N而不是仅使用直日志n来更改为或多或少攻击。
+         *          但是这个版本很简单，快速，似乎很好。）
          *
          * @return true if any stale entries have been removed.
          */
@@ -666,11 +706,13 @@ public class ThreadLocal<T> {
          * Re-pack and/or re-size the table. First scan the entire
          * table removing stale entries. If this doesn't sufficiently
          * shrink the size of the table, double the table size.
+         * 重新包装和/或重新尺寸表。首先扫描整个表删除陈旧条目。如果这不充分缩小表的大小，则扩大一倍表格大小。
          */
         private void rehash() {
             expungeStaleEntries();
 
             // Use lower threshold for doubling to avoid hysteresis
+            // 使用较低的阈值来加倍以避免滞后 清除过期Entry后 已使用 >= threshold 的 3/4 则扩大表格大小
             if (size >= threshold - threshold / 4)
                 resize();
         }

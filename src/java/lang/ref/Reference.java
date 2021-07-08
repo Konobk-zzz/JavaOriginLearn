@@ -34,6 +34,7 @@ import sun.misc.SharedSecrets;
  * operations common to all reference objects.  Because reference objects are
  * implemented in close cooperation with the garbage collector, this class may
  * not be subclassed directly.
+ * 参考对象的抽象基类。 该类定义了所有引用对象共同的操作。 由于引用对象与垃圾收集器密切配合实现，所以该类可能不会被直接子类化。
  *
  * @author   Mark Reinhold
  * @since    1.2
