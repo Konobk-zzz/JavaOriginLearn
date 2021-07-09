@@ -35,12 +35,15 @@ import java.util.Locale;
  * type {@code char} in an object. An object of type
  * {@code Character} contains a single field whose type is
  * {@code char}.
+ * Character类包装一个对象中的基本类型char的值。 类型为Character的对象包含一个单一字段，其类型为char 。
  * <p>
  * In addition, this class provides several methods for determining
  * a character's category (lowercase letter, digit, etc.) and for converting
  * characters from uppercase to lowercase and vice versa.
+ * 此外，该类还提供了几种方法来确定字符的类别（小写字母，数字等），并将字符从大写转换为小写，反之亦然。
  * <p>
  * Character information is based on the Unicode Standard, version 6.2.0.
+ * 字符信息基于Unicode标准版本6.2.0。
  * <p>
  * The methods and data of class {@code Character} are defined by
  * the information in the <i>UnicodeData</i> file that is part of the
@@ -48,8 +51,11 @@ import java.util.Locale;
  * Consortium. This file specifies various properties including name
  * and general category for every defined Unicode code point or
  * character range.
+ * 的方法和类的数据Character通过在UnicodeData文件的是由Unicode Consortium维护的Unicode字符数据库的一部分的信息来定义。
+ * 该文件为每个定义的Unicode代码点或字符范围指定各种属性，包括名称和常规类别。
  * <p>
  * The file and its description are available from the Unicode Consortium at:
+ * 该文件及其描述可从Unicode Consortium获得：
  * <ul>
  * <li><a href="http://www.unicode.org">http://www.unicode.org</a>
  * </ul>
@@ -67,6 +73,9 @@ import java.util.Locale;
  * href="http://www.unicode.org/reports/tr27/#notation"><i>
  * definition</i></a> of the U+<i>n</i> notation in the Unicode
  * Standard.)
+ * char数据类型（因此Character对象封装的值）基于原始Unicode规范，其将字符定义为固定宽度的16位实体。
+ * Unicode标准已经被更改为允许其表示需要超过16位的字符。 法定代码点的范围现在是U + 0000到U + 10FFFF，称为Unicode标量值 。
+ * （请参阅Unicode标准中U + n符号的 definition。 ）
  *
  * <p><a name="BMP">The set of characters from U+0000 to U+FFFF</a> is
  * sometimes referred to as the <em>Basic Multilingual Plane (BMP)</em>.
@@ -78,6 +87,9 @@ import java.util.Locale;
  * of {@code char} values, the first from the <em>high-surrogates</em>
  * range, (&#92;uD800-&#92;uDBFF), the second from the
  * <em>low-surrogates</em> range (&#92;uDC00-&#92;uDFFF).
+ * The set of characters from U+0000 to U+FFFF有时被称为基本多语言平面（BMP） 。
+ * Characters其代码点大于U + FFFF称为增补字符秒。 Java平台在char阵列和String和StringBuffer类中使用UTF-16表示。
+ * 在此表示中，补充字符表示为一对char值，第一个来自高替代范围（\ uD800- \ uDBFF），第二个来自低代理范围（\ uDC00- \ uDFFF）。
  *
  * <p>A {@code char} value, therefore, represents Basic
  * Multilingual Plane (BMP) code points, including the surrogate
