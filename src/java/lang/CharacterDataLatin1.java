@@ -32,39 +32,40 @@ package java.lang;
 class CharacterDataLatin1 extends CharacterData {
 
     /* The character properties are currently encoded into 32 bits in the following manner:
-        1 bit   mirrored property
-        4 bits  directionality property
-        9 bits  signed offset used for converting case
-        1 bit   if 1, adding the signed offset converts the character to lowercase
-        1 bit   if 1, subtracting the signed offset converts the character to uppercase
-        1 bit   if 1, this character has a titlecase equivalent (possibly itself)
-        3 bits  0  may not be part of an identifier
-                1  ignorable control; may continue a Unicode identifier or Java identifier
-                2  may continue a Java identifier but not a Unicode identifier (unused)
-                3  may continue a Unicode identifier or Java identifier
-                4  is a Java whitespace character
-                5  may start or continue a Java identifier;
-                   may continue but not start a Unicode identifier (underscores)
-                6  may start or continue a Java identifier but not a Unicode identifier ($)
-                7  may start or continue a Unicode identifier or Java identifier
-                Thus:
-                   5, 6, 7 may start a Java identifier
-                   1, 2, 3, 5, 6, 7 may continue a Java identifier
-                   7 may start a Unicode identifier
-                   1, 3, 5, 7 may continue a Unicode identifier
-                   1 is ignorable within an identifier
-                   4 is Java whitespace
-        2 bits  0  this character has no numeric property
-                1  adding the digit offset to the character code and then
+        字符参数当前使用32位bit进行编码如下所示：
+        1 bit   mirrored property 镜像参数
+        4 bits  directionality property 方向性参数
+        9 bits  signed offset used for converting case 有符号的偏移用于转换大小写
+        1 bit   if 1, adding the signed offset converts the character to lowercase 如果为1，增加一个偏移量将字符转换成小写
+        1 bit   if 1, subtracting the signed offset converts the character to uppercase 如果为1，键区一个偏移量将字符转换成大写
+        1 bit   if 1, this character has a titlecase equivalent (possibly itself) 如果为1， 这个字符有一个 titlecase 等价于 （可能是他自身）
+        3 bits  0  may not be part of an identifier 为0，可能不是一个标识符的一部分
+                1  ignorable control; may continue a Unicode identifier or Java identifier 为1，可忽略的控制；可能是一个Unicode标识符或Java标识符的延续
+                2  may continue a Java identifier but not a Unicode identifier (unused) 为2，可能是一个Java标识符但不是一个Unicode标识符的延续（未使用）
+                3  may continue a Unicode identifier or Java identifier 为3，可能是一个Unicode标识符但不是一个Java标识符的延续
+                4  is a Java whitespace character 为4，是一个Java 空白字符
+                5  may start or continue a Java identifier; 为5，可能是一个Java标识符的开始或者延续；
+                   may continue but not start a Unicode identifier (underscores) 可能是一个Unicode标识符的延续而不是开头（underscores）
+                6  may start or continue a Java identifier but not a Unicode identifier ($) 为6，可能是一个Java标识符而不是一个Unicode标识符的开始或延续 ($)
+                7  may start or continue a Unicode identifier or Java identifier 为7，可能是一个Unicode标识符或者Java标识符的开始或延续
+                Thus: 因此：
+                   5, 6, 7 may start a Java identifier 5，6，7 可能是一个Java标识符的开始
+                   1, 2, 3, 5, 6, 7 may continue a Java identifier 1，2，3，5，6，7 可能是一个Java标识符的延续
+                   7 may start a Unicode identifier 7 可能是一个Unicode标识符的开始
+                   1, 3, 5, 7 may continue a Unicode identifier 1，3，5，7 可能是一个Unicode标识符的延续
+                   1 is ignorable within an identifier 1 是一个在内部可忽视的标识符
+                   4 is Java whitespace 4 是Java 空格
+        2 bits  0  this character has no numeric property 为0，这个字符没有数字属性
+                1  adding the digit offset to the character code and then 为1，增加数字偏移到字符编码并且使用 0x1F 遮掩将会产生期望的数字类型的值
                    masking with 0x1F will produce the desired numeric value
-                2  this character has a "strange" numeric value
-                3  a Java supradecimal digit: adding the digit offset to the
-                   character code, then masking with 0x1F, then adding 10
+                2  this character has a "strange" numeric value 为2，这个字符有奇怪的数字值
+                3  a Java supradecimal digit: adding the digit offset to the 为3， 一个Java supradecimal（16进制？）数字：增加一个数字偏移量到字符编码，
+                   character code, then masking with 0x1F, then adding 10         然后使用 0x1F 遮掩 再增加10 将会产生期望的数值
                    will produce the desired numeric value
-        5 bits  digit offset
-        5 bits  character type
+        5 bits  digit offset 数字偏移量
+        5 bits  character type 字符类型
 
-        The encoding of character properties is subject to change at any time.
+        The encoding of character properties is subject to change at any time.  字符编码属性再任何时候都是容易改变的
      */
 
     int getProperties(int ch) {
