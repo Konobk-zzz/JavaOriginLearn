@@ -42,11 +42,17 @@ public class IntegerTest {
         System.out.println("Integer.reverseBytes(1): " + Integer.reverseBytes(1));
     }
 
+    private static void testByte() {
+        byte b = (byte) (-128 -1);
+        System.out.println(b);
+    }
+
     public static void main(String[] args) {
 //        testIntegerAddress();
 //        testCompareUnsigned();
 //        testMovePosition();
 //        testSignum();
-        testReverse();
+//        testReverse();
+        testByte();
     }
 }
