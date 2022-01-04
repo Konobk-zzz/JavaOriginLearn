@@ -83,6 +83,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * Returns the current capacity. The capacity is the amount of storage
      * available for newly inserted characters, beyond which an allocation
      * will occur.
+     * 返回当前的容量。容量为最近可以被插入字符的全部可用存储空间，将会发生越界（？是这个意思嘛）
      *
      * @return  the current capacity
      */
@@ -95,14 +96,18 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * If the current capacity is less than the argument, then a new internal
      * array is allocated with greater capacity. The new capacity is the
      * larger of:
+     * 确保容量大于等于指定的最小值。如果当前的容量小于这个参数，然后一个内部数组将会被
+     * 创建为一个新的更大的容量。新的容量将会大于:
      * <ul>
-     * <li>The {@code minimumCapacity} argument.
-     * <li>Twice the old capacity, plus {@code 2}.
+     * <li>The {@code minimumCapacity} argument. 指定的最小容量
+     * <li>Twice the old capacity, plus {@code 2}. 两倍旧容器的容量
      * </ul>
      * If the {@code minimumCapacity} argument is nonpositive, this
      * method takes no action and simply returns.
+     * 如果入参是负数，该方法不会进行任何操作。
      * Note that subsequent operations on this object can reduce the
      * actual capacity below that requested here.
+     * 注意 subsequent 操作在该对象上可以减少实际的容量超过要求的容量。
      *
      * @param   minimumCapacity   the minimum desired capacity.
      */
@@ -115,8 +120,11 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * For positive values of {@code minimumCapacity}, this method
      * behaves like {@code ensureCapacity}, however it is never
      * synchronized.
+     * minimumCapacity为正数的话，该方法行为将会像 ensureCapacity，然而
+     * 他不使用同步
      * If {@code minimumCapacity} is non positive due to numeric
      * overflow, this method throws {@code OutOfMemoryError}.
+     * 如果入参 minimumCapacity 是负数，该方法不会进行任何操作。
      */
     private void ensureCapacityInternal(int minimumCapacity) {
         // overflow-conscious code
@@ -131,6 +139,8 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * Some VMs reserve some header words in an array.
      * Attempts to allocate larger arrays may result in
      * OutOfMemoryError: Requested array size exceeds VM limit
+     * 数组允许的最大值（除非有必要）。一个数组中有一些虚拟机预定的 header words。
+     * 尝试允许更大的数组值可能会造成 OutOfMemoryError：需要的数组大小超过虚拟机限制。
      */
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
@@ -138,8 +148,11 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * Returns a capacity at least as large as the given minimum capacity.
      * Returns the current capacity increased by the same amount + 2 if
      * that suffices.
+     * 返回一个容量大于 给定的 minCapacity 的容量的最小容器，返回的容器将会增长到两倍大小 + 2，
+     * 如果足够使用。
      * Will not return a capacity greater than {@code MAX_ARRAY_SIZE}
      * unless the given minimum capacity is greater than that.
+     * 将不会返回一个大于 MAX_ARRAY_SIZE 大小的容器，除非给定的 最小容量大于它。
      *
      * @param  minCapacity the desired minimum capacity
      * @throws OutOfMemoryError if minCapacity is less than zero or
@@ -170,6 +183,8 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * characters, then it may be resized to become more space efficient.
      * Calling this method may, but is not required to, affect the value
      * returned by a subsequent call to the {@link #capacity()} method.
+     * 尝试减少存储使用的空间。如果缓存大于当前必须的字符序列，可能需要重新分配大小，让空间
+     * 更加高效。调用这个方法或许可以，但是不是必须的，影响值返回通过一个子序列调用 capacity() 方法
      */
     public void trimToSize() {
         if (count < value.length) {
@@ -186,17 +201,23 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * character at index <i>k</i> in the old sequence if <i>k</i> is less
      * than the length of the old character sequence; otherwise, it is the
      * null character {@code '\u005Cu0000'}.
+     * 设置字符序列的防毒。序列将会被改变成一个新的被入参指定长度的字符序列。
+     * 对于任意小于新长度的索引 k， 这个 索引k上的字符在新的字符序列中和旧序列中
+     * 拥有相同索引 k ，如果 k 小于旧字符序列的长度；否则将会是一个 null 字符。
      *
      * In other words, if the {@code newLength} argument is less than
      * the current length, the length is changed to the specified length.
+     * 换句话说，如果 入参 newLength 小于当前长度，那么当都将会被改变成指定的长度。
      * <p>
      * If the {@code newLength} argument is greater than or equal
      * to the current length, sufficient null characters
      * ({@code '\u005Cu0000'}) are appended so that
      * length becomes the {@code newLength} argument.
+     * 如果 参数 newLength 大于或等于当前长度，将填充足够的 null 字符到新的长度。
      * <p>
      * The {@code newLength} argument must be greater than or equal
      * to {@code 0}.
+     * 参数 newLength 必须大于等于 0 。
      *
      * @param      newLength   the new length
      * @throws     IndexOutOfBoundsException  if the
@@ -218,13 +239,16 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * Returns the {@code char} value in this sequence at the specified index.
      * The first {@code char} value is at index {@code 0}, the next at index
      * {@code 1}, and so on, as in array indexing.
+     * 返回指定索引在序列上的字符值。值的索引从0开始。
      * <p>
      * The index argument must be greater than or equal to
      * {@code 0}, and less than the length of this sequence.
+     * 索引参数必须大于或等于0 且 小于队列的长度。
      *
      * <p>If the {@code char} value specified by the index is a
      * <a href="Character.html#unicode">surrogate</a>, the surrogate
      * value is returned.
+     * 如果索引指定的字符是一个代理位，那么将会返回代理位的值。
      *
      * @param      index   the index of the desired {@code char} value.
      * @return     the {@code char} value at the specified index.
@@ -243,6 +267,8 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * index. The index refers to {@code char} values
      * (Unicode code units) and ranges from {@code 0} to
      * {@link #length()}{@code  - 1}.
+     * 返回指定索引上的字符（Unicode 码点）。索引参考 char(Unicode 编码单元)的值
+     * 并且 索引取值区间从 0 到 length() - 1。
      *
      * <p> If the {@code char} value specified at the given index
      * is in the high-surrogate range, the following index is less
@@ -251,6 +277,9 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * low-surrogate range, then the supplementary code point
      * corresponding to this surrogate pair is returned. Otherwise,
      * the {@code char} value at the given index is returned.
+     * 如果指定索引对应的字符处于高位代理区间，下一个索引小于这个序列的长度，
+     * 并且下一个索引对应的复制处于低位代理区间，那么补充码点将以代理对的表现形式返回。
+     * 否则 返回索引给定的字符值
      *
      * @param      index the index to the {@code char} values
      * @return     the code point value of the character at the
@@ -271,6 +300,8 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * index. The index refers to {@code char} values
      * (Unicode code units) and ranges from {@code 1} to {@link
      * #length()}.
+     * 返回在指定索引之前的字符（Unicode 码点）。索引参照 char值（Unicode 编码单元）
+     * 并且 在 1 ~ length() 区间。
      *
      * <p> If the {@code char} value at {@code (index - 1)}
      * is in the low-surrogate range, {@code (index - 2)} is not
@@ -303,6 +334,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * {@code char}s) of the text range is
      * {@code endIndex-beginIndex}. Unpaired surrogates within
      * this sequence count as one code point each.
+     * 返回序列指定区间中Unicode 码点的数量。
      *
      * @param beginIndex the index to the first {@code char} of
      * the text range.
@@ -328,6 +360,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * points. Unpaired surrogates within the text range given by
      * {@code index} and {@code codePointOffset} count as
      * one code point each.
+     * 获得指定码点偏移指定的偏移量后的索引。
      *
      * @param index the index to be offset
      * @param codePointOffset the offset in code points
@@ -357,6 +390,9 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * characters to be copied is {@code srcEnd-srcBegin}. The
      * characters are copied into the subarray of {@code dst} starting
      * at index {@code dstBegin} and ending at index:
+     * 复制当前字符序列到目标字符数组。 第一个字符从 参数 srcBegin 索引开始拷贝；
+     * 最后一个字符拷贝到 参数 srcEnd-1。复制字符的总数是 srcEnd-srcBegin。
+     * 这个子串将拷贝到目标数组以 参数 dstBegin 开始，到 dstbegin + (srcEnd-srcBegin) - 1 结束
      * <pre>{@code
      * dstbegin + (srcEnd-srcBegin) - 1
      * }</pre>
@@ -393,6 +429,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
      * sequence is altered to represent a new character sequence that is
      * identical to the old character sequence, except that it contains the
      * character {@code ch} at position {@code index}.
+     * 设置指定索引上的字符。这个新队列将会表现的和旧队列完全一致，除了 index 指定位置上的字符。
      * <p>
      * The index argument must be greater than or equal to
      * {@code 0}, and less than the length of this sequence.
@@ -410,6 +447,7 @@ abstract class AbstractStringBuilder implements Appendable, CharSequence {
 
     /**
      * Appends the string representation of the {@code Object} argument.
+     * 追加一个 Object的字符串 表示。
      * <p>
      * The overall effect is exactly as if the argument were converted
      * to a string by the method {@link String#valueOf(Object)},

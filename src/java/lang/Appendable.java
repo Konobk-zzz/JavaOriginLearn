@@ -32,19 +32,23 @@ import java.io.IOException;
  * <tt>Appendable</tt> interface must be implemented by any class whose
  * instances are intended to receive formatted output from a {@link
  * java.util.Formatter}.
+ * 可附加char序列和值的对象。 Appendable接口必须由其实例旨在从Formatter接收格式化输出的任何类实现 。
  *
  * <p> The characters to be appended should be valid Unicode characters as
  * described in <a href="Character.html#unicode">Unicode Character
  * Representation</a>.  Note that supplementary characters may be composed of
  * multiple 16-bit <tt>char</tt> values.
+ * 要附加的字符应为Unicode Character Representation中描述的有效Unicode字符。 请注意，补充字符可以由多个16位char值组成。
  *
  * <p> Appendables are not necessarily safe for multithreaded access.  Thread
  * safety is the responsibility of classes that extend and implement this
  * interface.
+ * 对于多线程访问，附加功能不一定是安全的。 线程安全是扩展和实现这个接口的类的责任。
  *
  * <p> Since this interface may be implemented by existing classes
  * with different styles of error handling there is no guarantee that
  * errors will be propagated to the invoker.
+ * 由于此接口可能由具有不同样式的错误处理的现有类实现，因此不能保证将错误传播到调用者。
  *
  * @since 1.5
  */
@@ -52,16 +56,20 @@ public interface Appendable {
 
     /**
      * Appends the specified character sequence to this <tt>Appendable</tt>.
+     * 将指定的字符序列追加到此Appendable 。
      *
      * <p> Depending on which class implements the character sequence
      * <tt>csq</tt>, the entire sequence may not be appended.  For
      * instance, if <tt>csq</tt> is a {@link java.nio.CharBuffer} then
      * the subsequence to append is defined by the buffer's position and limit.
+     * 根据哪个类实现字符序列csq ，可能不会附加整个序列。
+     * 例如，如果csq是CharBuffer，则附加的子序列由缓冲区的位置和限制来定义。
      *
      * @param  csq
      *         The character sequence to append.  If <tt>csq</tt> is
      *         <tt>null</tt>, then the four characters <tt>"null"</tt> are
      *         appended to this Appendable.
+     *         要追加的字符序列。 如果csq是null ，则四个字符"null"附加到该附录。
      *
      * @return  A reference to this <tt>Appendable</tt>
      *
@@ -73,10 +81,12 @@ public interface Appendable {
     /**
      * Appends a subsequence of the specified character sequence to this
      * <tt>Appendable</tt>.
+     * 将指定的字符序列的子序列附加到此Appendable 。
      *
      * <p> An invocation of this method of the form <tt>out.append(csq, start,
      * end)</tt> when <tt>csq</tt> is not <tt>null</tt>, behaves in
      * exactly the same way as the invocation
+     * 形式的这种方法的调用时out.append(csq, start, end) csq不是null，行为以完全相同的方式调用
      *
      * <pre>
      *     out.append(csq.subSequence(start, end)) </pre>
@@ -108,6 +118,7 @@ public interface Appendable {
 
     /**
      * Appends the specified character to this <tt>Appendable</tt>.
+     * 将指定的字符附加到此 Appendable 。
      *
      * @param  c
      *         The character to append
