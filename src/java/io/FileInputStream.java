@@ -33,10 +33,12 @@ import sun.nio.ch.FileChannelImpl;
  * A <code>FileInputStream</code> obtains input bytes
  * from a file in a file system. What files
  * are  available depends on the host environment.
+ * FileInputStream从文件系统中的文件获取输入字节。 什么文件可用取决于主机环境。
  *
  * <p><code>FileInputStream</code> is meant for reading streams of raw bytes
  * such as image data. For reading streams of characters, consider using
  * <code>FileReader</code>.
+ * FileInputStream用于读取诸如图像数据的原始字节流。 要阅读字符串，请考虑使用FileReader
  *
  * @author  Arthur van Hoff
  * @see     java.io.File
@@ -54,6 +56,7 @@ class FileInputStream extends InputStream
     /**
      * The path of the referenced file
      * (null if the stream is created with a file descriptor)
+     * 引用文件的路径（如果是null，说明流已经被一个文件描述符创建了）
      */
     private final String path;
 
@@ -69,11 +72,14 @@ class FileInputStream extends InputStream
      * in the file system.  A new <code>FileDescriptor</code>
      * object is created to represent this file
      * connection.
+     * 通过打开与实际文件的连接创建一个FileInputStream文件，该文件由文件系统中的路径名name命名。
+     * 创建一个新的FileDescriptor对象来表示此文件连接。
      * <p>
      * First, if there is a security
      * manager, its <code>checkRead</code> method
      * is called with the <code>name</code> argument
      * as its argument.
+     * 首先，如果有一个安全管理器，它的checkRead方法被调用与name参数作为其参数。
      * <p>
      * If the named file does not exist, is a directory rather than a regular
      * file, or for some other reason cannot be opened for reading then a
