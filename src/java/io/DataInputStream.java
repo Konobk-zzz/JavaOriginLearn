@@ -30,10 +30,13 @@ package java.io;
  * types from an underlying input stream in a machine-independent
  * way. An application uses a data output stream to write data that
  * can later be read by a data input stream.
+ * 数据输入流允许应用程序以独立于机器的方式从底层输入流读取原始Java数据类型。
+ * 应用程序使用数据输出流来写入稍后可以被数据输入流读取的数据。
  * <p>
  * DataInputStream is not necessarily safe for multithreaded access.
  * Thread safety is optional and is the responsibility of users of
  * methods in this class.
+ * DataInputStream对于多线程访问来说不一定是安全的。线程安全是可选的，这是使用本类的用户的责任。
  *
  * @author  Arthur van Hoff
  * @see     java.io.DataOutputStream
@@ -45,6 +48,7 @@ class DataInputStream extends FilterInputStream implements DataInput {
     /**
      * Creates a DataInputStream that uses the specified
      * underlying InputStream.
+     * 创建使用指定的底层InputStream的DataInputStream。
      *
      * @param  in   the specified input stream
      */
@@ -64,6 +68,8 @@ class DataInputStream extends FilterInputStream implements DataInput {
      * bytes actually read is returned as an integer. This method blocks
      * until input data is available, end of file is detected, or an
      * exception is thrown.
+     * 从包含的输入流中读取一些字节数，并将它们存储到缓冲区数组b 。
+     * 实际读取的字节数作为整数返回。 该方法阻塞直到输入数据可用，检测到文件结束或抛出异常。
      *
      * <p>If <code>b</code> is null, a <code>NullPointerException</code> is
      * thrown. If the length of <code>b</code> is zero, then no bytes are
@@ -71,6 +77,8 @@ class DataInputStream extends FilterInputStream implements DataInput {
      * to read at least one byte. If no byte is available because the
      * stream is at end of file, the value <code>-1</code> is returned;
      * otherwise, at least one byte is read and stored into <code>b</code>.
+     * 如果b为null，则抛出NullPointerException 。 如果b的长度为零，则不会读取字节并返回0 ;
+     * 否则，尝试读取至少一个字节。 如果没有字节可用，因为流在文件结尾，则返回值-1 ; 否则，读取至少一个字节并存储到b 。
      *
      * <p>The first byte read is stored into element <code>b[0]</code>, the
      * next one into <code>b[1]</code>, and so on. The number of bytes read
@@ -79,11 +87,15 @@ class DataInputStream extends FilterInputStream implements DataInput {
      * elements <code>b[0]</code> through <code>b[k-1]</code>, leaving
      * elements <code>b[k]</code> through <code>b[b.length-1]</code>
      * unaffected.
+     * 读取的第一个字节存储在元素b[0] ，下一个字节存入b[1]等等。 读取的字节数最多等于b的长度。
+     * 让k是实际读取的字节数; 这些字节将存储在元素b[0]至b[k-1] ，使元素b[k]至b[b.length-1]不受影响。
      *
      * <p>The <code>read(b)</code> method has the same effect as:
      * <blockquote><pre>
      * read(b, 0, b.length)
      * </pre></blockquote>
+     * read(b)方法具有如下效果：
+     *  read(b, 0, b.length)
      *
      * @param      b   the buffer into which the data is read.
      * @return     the total number of bytes read into the buffer, or
@@ -152,10 +164,12 @@ class DataInputStream extends FilterInputStream implements DataInput {
     /**
      * See the general contract of the <code>readFully</code>
      * method of <code>DataInput</code>.
+     * 见readFully方法DataInput的一般合同。
      * <p>
      * Bytes
      * for this operation are read from the contained
      * input stream.
+     * 从所包含的输入流中读取此操作的字节数。
      *
      * @param      b   the buffer into which the data is read.
      * @exception  EOFException  if this input stream reaches the end before
@@ -172,10 +186,12 @@ class DataInputStream extends FilterInputStream implements DataInput {
     /**
      * See the general contract of the <code>readFully</code>
      * method of <code>DataInput</code>.
+     * 见的总承包readFully的方法DataInput 。
      * <p>
      * Bytes
      * for this operation are read from the contained
      * input stream.
+     * 从所包含的输入流中读取此操作的字节数。
      *
      * @param      b     the buffer into which the data is read.
      * @param      off   the start offset of the data.
@@ -202,9 +218,11 @@ class DataInputStream extends FilterInputStream implements DataInput {
     /**
      * See the general contract of the <code>skipBytes</code>
      * method of <code>DataInput</code>.
+     * 见skipBytes方法DataInput的一般合同。
      * <p>
      * Bytes for this operation are read from the contained
      * input stream.
+     * 从所包含的输入流中读取此操作的字节数。
      *
      * @param      n   the number of bytes to be skipped.
      * @return     the actual number of bytes skipped.

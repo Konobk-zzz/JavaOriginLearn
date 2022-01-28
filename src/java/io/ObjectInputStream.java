@@ -53,6 +53,7 @@ import sun.util.logging.PlatformLogger;
 /**
  * An ObjectInputStream deserializes primitive data and objects previously
  * written using an ObjectOutputStream.
+ * ObjectInputStream反序列化先前使用ObjectOutputStream编写的原始数据和对象。
  *
  * <p>ObjectOutputStream and ObjectInputStream can provide an application with
  * persistent storage for graphs of objects when used with a FileOutputStream
@@ -60,21 +61,29 @@ import sun.util.logging.PlatformLogger;
  * those objects previously serialized. Other uses include passing objects
  * between hosts using a socket stream or for marshaling and unmarshaling
  * arguments and parameters in a remote communication system.
+ * ObjectOutputStream和ObjectInputStream可以分别为与FileOutputStream和FileInputStream
+ * 一起使用的对象图提供持久性存储的应用程序。 ObjectInputStream用于恢复先前序列化的对象。
+ * 其他用途包括使用套接字流在主机之间传递对象，或者在远程通信系统中进行封送和解组参数和参数。
  *
  * <p>ObjectInputStream ensures that the types of all objects in the graph
  * created from the stream match the classes present in the Java Virtual
  * Machine.  Classes are loaded as required using the standard mechanisms.
+ * ObjectInputStream确保从流中创建的图中的所有对象的类型与Java虚拟机中存在的类匹配。 根据需要使用标准机制加载类。
  *
  * <p>Only objects that support the java.io.Serializable or
  * java.io.Externalizable interface can be read from streams.
+ * 只能从流中读取支持java.io.Serializable或java.io.Externalizable接口的对象。
  *
  * <p>The method <code>readObject</code> is used to read an object from the
  * stream.  Java's safe casting should be used to get the desired type.  In
  * Java, strings and arrays are objects and are treated as objects during
  * serialization. When read they need to be cast to the expected type.
+ * 方法readObject用于从流中读取对象。 应使用Java的安全铸造来获得所需的类型。
+ * 在Java中，字符串和数组是对象，在序列化过程中被视为对象。 读取时，需要将其转换为预期类型。
  *
  * <p>Primitive data types can be read from the stream using the appropriate
  * method on DataInput.
+ * 可以使用DataInput上的适当方法从流中读取原始数据类型。
  *
  * <p>The default deserialization mechanism for objects restores the contents
  * of each field to the value and type it had when it was written.  Fields
@@ -83,6 +92,11 @@ import sun.util.logging.PlatformLogger;
  * as necessary.  Graphs of objects are restored correctly using a reference
  * sharing mechanism.  New objects are always allocated when deserializing,
  * which prevents existing objects from being overwritten.
+ * 对象的默认反序列化机制将每个字段的内容恢复为写入时的值和类型。
+ * 声明为瞬态或静态的字段被反序列化过程忽略。
+ * 对其他对象的引用导致根据需要从流中读取这些对象。
+ * 使用参考共享机制正确恢复对象的图形。 反序列化时总是分配新对象，
+ * 这样可以防止现有对象被覆盖。
  *
  * <p>Reading an object is analogous to running the constructors of a new
  * object.  Memory is allocated for the object and initialized to zero (NULL).
@@ -90,9 +104,13 @@ import sun.util.logging.PlatformLogger;
  * the fields of the serializable classes are restored from the stream starting
  * with the serializable class closest to java.lang.object and finishing with
  * the object's most specific class.
+ * 读取对象类似于运行新对象的构造函数。 为对象分配内存，并初始化为零（NULL）。
+ * 对非可序列化类调用无索引构造函数，然后从最接近java.lang.object的可序列化类开始，
+ * 从串中还原可序列化类的字段，并使用对象的最特定类完成。
  *
  * <p>For example to read from a stream as written by the example in
  * ObjectOutputStream:
+ * 例如从ObjectOutputStream中的示例中写入的流中读取：
  * <br>
  * <pre>
  *      FileInputStream fis = new FileInputStream("t.tmp");
@@ -107,16 +125,20 @@ import sun.util.logging.PlatformLogger;
  *
  * <p>Classes control how they are serialized by implementing either the
  * java.io.Serializable or java.io.Externalizable interfaces.
+ * 类通过实现java.io.Serializable或java.io.Externalizable接口来控制它们是如何序列化的。
  *
  * <p>Implementing the Serializable interface allows object serialization to
  * save and restore the entire state of the object and it allows classes to
  * evolve between the time the stream is written and the time it is read.  It
  * automatically traverses references between objects, saving and restoring
  * entire graphs.
+ * 实现Serializable接口允许对象序列化保存和恢复对象的整个状态，
+ * 并允许类在流被写入的时间和读取时间之间演变。 它自动遍历对象之间的引用，保存和恢复整个图形。
  *
  * <p>Serializable classes that require special handling during the
  * serialization and deserialization process should implement the following
  * methods:
+ * 在序列化和反序列化过程中需要特殊处理的可序列化类应实现以下方法：
  *
  * <pre>
  * private void writeObject(java.io.ObjectOutputStream stream)
@@ -134,6 +156,9 @@ import sun.util.logging.PlatformLogger;
  * restored by reading data from the ObjectInputStream for the individual
  * fields and making assignments to the appropriate fields of the object.
  * Reading primitive data types is supported by DataInput.
+ * readObject方法负责使用通过相应的writeObject方法写入流的数据来读取和恢复其特定类的对象的状态。
+ * 该方法不需要关注属于其超类或子类的状态。
+ * 通过从ObjectInputStream读取各个字段的数据并对对象的相应字段进行分配来恢复状态。 DataInput支持读取原始数据类型。
  *
  * <p>Any attempt to read object data which exceeds the boundaries of the
  * custom data written by the corresponding writeObject method will cause an
@@ -144,6 +169,10 @@ import sun.util.logging.PlatformLogger;
  * primitive reads will throw EOFExceptions.  If there is no corresponding
  * writeObject method, then the end of default serialized data marks the end of
  * the allotted data.
+ * 任何尝试读取超过边界的使用相应 writeObject 方法写入的对象数据操作将会导致一个 OptionalDataException
+ * 被抛出，并且 eof 字段值为true。 超过分配数据结束的非对象读取将以与指示流结尾相同的方式反映数据的结尾：
+ * Bytewise读取将返回-1作为字节读取或读取的字节数，并且原始读取将抛出EOFExceptions。
+ * 如果没有相应的writeObject方法，则默认序列化数据的结尾标记分配的数据的结尾。
  *
  * <p>Primitive and object read calls issued from within a readExternal method
  * behave in the same manner--if the stream is already positioned at the end of
@@ -154,6 +183,10 @@ import sun.util.logging.PlatformLogger;
  * <code>ObjectStreamConstants.PROTOCOL_VERSION_1</code> protocol, in which the
  * end of data written by writeExternal methods is not demarcated, and hence
  * cannot be detected.
+ * 在readExternal方法中发出的原始和对象读取调用的行为方式相同 - 如果流已经位于由相应的writeExternal方法写入的数据的末尾，
+ * 则对象读取会将可选数据异常与eof设置为true，Bytewise读取将返回-1，
+ * 并且原始读取将抛出EOFExceptions。 请注意，此行为对于使用旧的ObjectStreamConstants.PROTOCOL_VERSION_1协议编写的流不适用，
+ * 其中由writeExternal方法写入的数据的结尾未划分，因此无法检测。
  *
  * <p>The readObjectNoData method is responsible for initializing the state of
  * the object for its particular class in the event that the serialization
@@ -165,6 +198,9 @@ import sun.util.logging.PlatformLogger;
  * been tampered; hence, readObjectNoData is useful for initializing
  * deserialized objects properly despite a "hostile" or incomplete source
  * stream.
+ * 如果序列化流未将给定类列为反序列化对象的超类，则readObjectNoData方法负责初始化其特定类的对象的状态。
+ * 这可能发生在接收方使用与发送方不同的反序列化实例的类的版本的情况下，并且接收者的版本扩展了不被发送者版本扩展的类。
+ * 如果序列化流已被篡改，也可能发生这种情况; 因此，尽管存在“敌对”或不完整的源流，readObjectNoData可用于正确初始化反序列化对象。
  *
  * <p>Serialization does not read or assign values to the fields of any object
  * that does not implement the java.io.Serializable interface.  Subclasses of
@@ -175,9 +211,14 @@ import sun.util.logging.PlatformLogger;
  * the case that the fields of that class are accessible (public, package, or
  * protected) or that there are get and set methods that can be used to restore
  * the state.
+ * 序列化不会读取或赋值任何不实现java.io.Serializable接口的对象的值。 不可序列化的对象的子类可以是可序列化的。
+ * 在这种情况下，非可序列化类必须有一个无参数构造函数，以允许其字段被初始化。
+ * 在这种情况下，子类有责任保存并恢复不可序列化类的状态。 通常情况下，该类的字段是可访问的（public，package或protected），
+ * 或者可以使用get和set方法来恢复状态。
  *
  * <p>Any exception that occurs while deserializing an object will be caught by
  * the ObjectInputStream and abort the reading process.
+ * 反序列化对象时发生的任何异常都将被ObjectInputStream捕获并中止读取过程。
  *
  * <p>Implementing the Externalizable interface allows the object to assume
  * complete control over the contents and format of the object's serialized
@@ -186,6 +227,10 @@ import sun.util.logging.PlatformLogger;
  * implemented by a class they can write and read their own state using all of
  * the methods of ObjectOutput and ObjectInput.  It is the responsibility of
  * the objects to handle any versioning that occurs.
+ * 实现Externalizable接口允许对象完全控制对象的序列化表单的内容和格式。
+ * 调用Externalizable接口writeExternal和readExternal的方法来保存和恢复对象的状态。
+ * 当由类实现时，他们可以使用ObjectOutput和ObjectInput的所有方法来写入和读取自己的状态。
+ * 对象处理发生的任何版本控制都是有责任的。
  *
  * <p>Enum constants are deserialized differently than ordinary serializable or
  * externalizable objects.  The serialized form of an enum constant consists
@@ -201,6 +246,12 @@ import sun.util.logging.PlatformLogger;
  * methods defined by enum types are ignored during deserialization.
  * Similarly, any serialPersistentFields or serialVersionUID field declarations
  * are also ignored--all enum types have a fixed serialVersionUID of 0L.
+ * 枚举常数的反序列化与普通可序列化或外部化对象不同。 枚举常数的序列化形式仅由其名称组成;
+ * 不传输常数的字段值。 要反序列化枚举常量，ObjectInputStream从流中读取常量名称;
+ * 然后通过使用枚举常量的基本类型和接收的常量名称作为参数调用静态方法Enum.valueOf(Class, String)获得反序列化常数。
+ * 像其他可序列化或可外部化的对象一样，枚举常量可以作为随后在序列化流中出现的反向引用的目标。
+ * 枚举常量被反序列化的过程无法自定义：在反序列化期间将忽略由枚举类型定义的任何特定于类的readObject，readObjectNoData和readResolve方法。
+ * 类似地，任何serialPersistentFields或serialVersionUID字段声明也被忽略 - 所有枚举类型都有一个固定的serialVersionUID为0L。
  *
  * @author      Mike Warres
  * @author      Roger Riggs
@@ -322,12 +373,17 @@ public class ObjectInputStream
      * A serialization stream header is read from the stream and verified.
      * This constructor will block until the corresponding ObjectOutputStream
      * has written and flushed the header.
+     * 创建从指定的InputStream读取的ObjectInputStream。 从流中读取序列化流头并进行验证。
+     * 该构造函数将阻塞，直到相应的ObjectOutputStream已写入并刷新标题。
      *
      * <p>If a security manager is installed, this constructor will check for
      * the "enableSubclassImplementation" SerializablePermission when invoked
      * directly or indirectly by the constructor of a subclass which overrides
      * the ObjectInputStream.readFields or ObjectInputStream.readUnshared
      * methods.
+     * 如果安装了一个安全管理器，那么这个构造函数将会在覆盖ObjectInputStream.readFields或
+     * ObjectInputStream.readUnshared方法的子类的构造函数直接或间接调用时
+     * 检查“enableSubclassImplementation”SerializablePermission。
      *
      * @param   in input stream to read from
      * @throws  StreamCorruptedException if the stream header is incorrect
@@ -354,11 +410,14 @@ public class ObjectInputStream
      * Provide a way for subclasses that are completely reimplementing
      * ObjectInputStream to not have to allocate private data just used by this
      * implementation of ObjectInputStream.
+     * 为完全重新实现ObjectInputStream的子类提供一种方法，不必分配刚刚被ObjectInputStream实现使用的私有数据。
      *
      * <p>If there is a security manager installed, this method first calls the
      * security manager's <code>checkPermission</code> method with the
      * <code>SerializablePermission("enableSubclassImplementation")</code>
      * permission to ensure it's ok to enable subclassing.
+     * 如果安装了安全管理器，则此方法首先使用
+     * SerializablePermission("enableSubclassImplementation")权限调用安全管理器的checkPermission方法，以确保启用子类化。
      *
      * @throws  SecurityException if a security manager exists and its
      *          <code>checkPermission</code> method denies enabling
@@ -387,17 +446,26 @@ public class ObjectInputStream
      * and readObject methods.  Objects referenced by this object are read
      * transitively so that a complete equivalent graph of objects is
      * reconstructed by readObject.
+     * 从ObjectInputStream读取一个对象。 读取对象的类，类的签名以及类的非瞬态和非静态字段的值以及其所有超类型。
+     * 可以使用writeObject和readObject方法覆盖类的默认反序列化。
+     * 这个对象引用的对象被传递性地读取，以便通过readObject重构一个完整的对象图。
      *
      * <p>The root object is completely restored when all of its fields and the
      * objects it references are completely restored.  At this point the object
      * validation callbacks are executed in order based on their registered
      * priorities. The callbacks are registered by objects (in the readObject
      * special methods) as they are individually restored.
+     * 当其所有字段及其引用的对象完全还原时，根对象将被完全还原。
+     * 此时，对象验证回调按照它们注册的优先级顺序执行。
+     * 回调由对象（在readObject特殊方法中）注册，因为它们被单独还原。
      *
      * <p>Exceptions are thrown for problems with the InputStream and for
      * classes that should not be deserialized.  All exceptions are fatal to
      * the InputStream and leave it in an indeterminate state; it is up to the
      * caller to ignore or recover the stream state.
+     * 对于InputStream和不应反序列化的类的问题，抛出异常。
+     * 所有异常都是对InputStream致命的，并将其置于不确定状态;
+     * 调用者可以忽略或恢复流状态。
      *
      * @throws  ClassNotFoundException Class of a serialized object cannot be
      *          found.
@@ -442,6 +510,8 @@ public class ObjectInputStream
      * constructed ObjectOutputStream using the protected no-arg constructor.
      * The subclass is expected to provide an override method with the modifier
      * "final".
+     * 此方法由ObjectOutputStream的受信任子类调用，该子类使用受保护的无参构造函数构造ObjectOutputStream。
+     * 该子类预计将提供一个具有修饰符“final”的覆盖方法。
      *
      * @return  the Object read from the stream.
      * @throws  ClassNotFoundException Class definition of a serialized object
@@ -465,15 +535,19 @@ public class ObjectInputStream
      * identical to readObject, except that it prevents subsequent calls to
      * readObject and readUnshared from returning additional references to the
      * deserialized instance obtained via this call.  Specifically:
+     * 从ObjectInputStream读取一个“非共享”对象。 此方法与readObject相同，
+     * 只是它阻止对readObject的后续调用和readUnshared返回对通过此调用获取的反序列化实例的其他引用。 特别：
      * <ul>
      *   <li>If readUnshared is called to deserialize a back-reference (the
      *       stream representation of an object which has been written
      *       previously to the stream), an ObjectStreamException will be
      *       thrown.
+     *       如果调用readUnshared来反序列化一个反向引用（以前已经写入流的对象的流表示），则抛出ObjectStreamException。
      *
      *   <li>If readUnshared returns successfully, then any subsequent attempts
      *       to deserialize back-references to the stream handle deserialized
      *       by readUnshared will cause an ObjectStreamException to be thrown.
+     *       如果readUnshared成功返回，则随后尝试反序列化对readUnshared反序列化的流处理的反向引用将导致抛出ObjectStreamException。
      * </ul>
      * Deserializing an object via readUnshared invalidates the stream handle
      * associated with the returned object.  Note that this in itself does not
@@ -487,12 +561,20 @@ public class ObjectInputStream
      * array object is unique and cannot be obtained a second time from an
      * invocation of readObject or readUnshared on the ObjectInputStream,
      * even if the underlying data stream has been manipulated.
+     * 通过readUnshared对对象进行反序列化将使与返回对象关联的流句柄无效。 请注意，
+     * 这本身并不总是保证readUnshared返回的引用是唯一的; 反序列化对象可以定义一个readResolve方法，
+     * 该方法返回对其他方可见的对象，或者readUnshared可以返回在流中或通过外部方式在其他地方可获取的Class对象或枚举常量。
+     * 如果反序列化对象定义了一个readResolve方法，并且该方法的调用返回一个数组，那么readUnshared返回该数组的浅克隆;
+     * 这样可以保证返回的数组对象是唯一的，即使在底层数据流已经被处理的情况下，
+     * 也不能再从调用readObject或readUnshared在ObjectInputStream上获取。
      *
      * <p>ObjectInputStream subclasses which override this method can only be
      * constructed in security contexts possessing the
      * "enableSubclassImplementation" SerializablePermission; any attempt to
      * instantiate such a subclass without this permission will cause a
      * SecurityException to be thrown.
+     * 覆盖此方法的ObjectInputStream子类只能在拥有“enableSubclassImplementation”SerializablePermission的安全上下文中构建;
+     * 任何尝试在没有此权限的情况下实例化此类子类将导致抛出SecurityException。
      *
      * @return  reference to deserialized object
      * @throws  ClassNotFoundException if class of an object to deserialize
@@ -532,6 +614,8 @@ public class ObjectInputStream
      * this stream.  This may only be called from the readObject method of the
      * class being deserialized. It will throw the NotActiveException if it is
      * called otherwise.
+     * 从此流读取当前类的非静态和非瞬态字段。 这只能从被反序列化的类的readObject方法调用。
+     * 否则将抛出NotActiveException异常。
      *
      * @throws  ClassNotFoundException if the class of a serialized object
      *          could not be found.
@@ -568,6 +652,7 @@ public class ObjectInputStream
     /**
      * Reads the persistent fields from the stream and makes them available by
      * name.
+     * 从流中读取持久性字段，并通过名称获取它们。
      *
      * @return  the <code>GetField</code> object representing the persistent
      *          fields of the object being deserialized
@@ -609,6 +694,8 @@ public class ObjectInputStream
      * graph has been reconstituted.  Typically, a readObject method will
      * register the object with the stream so that when all of the objects are
      * restored a final set of validations can be performed.
+     * 在返回图之前注册要验证的对象。 虽然类似于resolveObject这些验证在整个图形重新构建之后被调用。
+     * 通常，readObject方法将使用流注册对象，以便当所有对象都被还原时，可以执行最后一组验证。
      *
      * @param   obj the object to receive the validation callback.
      * @param   prio controls the order of callbacks;zero is a good default.
@@ -632,6 +719,7 @@ public class ObjectInputStream
      * Load the local class equivalent of the specified stream class
      * description.  Subclasses may implement this method to allow classes to
      * be fetched from an alternate source.
+     * 加载本地类等效的指定流类描述。 子类可以实现此方法，以允许从备用源获取类。
      *
      * <p>The corresponding method in <code>ObjectOutputStream</code> is
      * <code>annotateClass</code>.  This method will be invoked only once for
@@ -641,9 +729,14 @@ public class ObjectInputStream
      * class, its serialVersionUID is compared to the serialVersionUID of the
      * serialized class, and if there is a mismatch, the deserialization fails
      * and an {@link InvalidClassException} is thrown.
+     * 在相应的方法ObjectOutputStream是annotateClass 。 对于流中的每个唯一类，此方法将仅调用一次。
+     * 这个方法可以通过子类来实现，使用一个备用的加载机制，但必须返回一个类对象。
+     * 一旦返回，如果类不是数组类，其serialVersionUID与序列化类的serialVersionUID进行比较，如果不匹配，
+     * 则反序列化失败，并抛出InvalidClassException 。
      *
      * <p>The default implementation of this method in
      * <code>ObjectInputStream</code> returns the result of calling
+     * 在此方法的默认实现ObjectInputStream返回调用的结果
      * <pre>
      *     Class.forName(desc.getName(), false, loader)
      * </pre>
@@ -662,6 +755,12 @@ public class ObjectInputStream
      * <code>"int"</code> will be resolved to <code>Integer.TYPE</code>).
      * Otherwise, the <code>ClassNotFoundException</code> will be thrown to
      * the caller of this method.
+     * 其中loader的确定如下：如果当前线程的堆栈中有一个方法，其声明类是由用户定义的类加载器定义的
+     * （并且不是为了实现反射调用而生成的），则loader是对应于最接近的类加载器的类加载器这种方法到当
+     * 前执行的帧; 否则， loader是null 。 如果该调用导致ClassNotFoundException和传递的名称
+     * ObjectStreamClass是一个基本类型或void Java语言的关键字，那么实例类表示基本类型或void对象
+     * 将被退回（例如， ObjectStreamClass名为"int"会解决到Integer.TYPE ）。
+     * 否则， ClassNotFoundException将被抛出这个方法的调用者
      *
      * @param   desc an instance of class <code>ObjectStreamClass</code>
      * @return  a <code>Class</code> object corresponding to <code>desc</code>

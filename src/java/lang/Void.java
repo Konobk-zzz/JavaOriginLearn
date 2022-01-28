@@ -29,7 +29,7 @@ package java.lang;
  * The {@code Void} class is an uninstantiable placeholder class to hold a
  * reference to the {@code Class} object representing the Java keyword
  * void.
- * Void类是一个不可抗拒的占位符类，用于保存对表示Java关键字void的 类对象的引用。
+ * Void类是一个不实例化的占位符类，用于保存对表示Java关键字void的 类对象的引用。
  *
  * @author  unascribed
  * @since   JDK1.1

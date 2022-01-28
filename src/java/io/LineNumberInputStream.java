@@ -45,6 +45,8 @@ package java.io;
  *             characters.  As of JDK&nbsp;1.1, the preferred way to operate on
  *             character streams is via the new character-stream classes, which
  *             include a class for counting line numbers.
+ *             该类错误地假定字节充分表示字符。 从JDK 1.1开始，
+ *             对字符流进行操作的首选方式是通过新的字符流类，其中包括一个用于计数行号的类。
  */
 @Deprecated
 public

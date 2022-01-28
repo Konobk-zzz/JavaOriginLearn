@@ -43,11 +43,17 @@ import java.nio.charset.UnsupportedCharsetException;
  * automatically invoked after a byte array is written, one of the
  * <code>println</code> methods is invoked, or a newline character or byte
  * (<code>'\n'</code>) is written.
+ * A PrintStream为另一个输出流添加了功能，即能够方便地打印各种数据值的表示。 还提供了另外两个功能。
+ * 与其他输出流不同， PrintStream从不抛出IOException ; 相反，异常情况只是设置一个可以通过checkError方法测试的内部标志。
+ * 可以选择一个PrintStream ，以便自动刷新; 这意味着flush字节数组写入方法后自动调用，
+ * 所述一个println方法被调用时，或者一个新行字符或字节（ '\n' ）被写入。
  *
  * <p> All characters printed by a <code>PrintStream</code> are converted into
  * bytes using the platform's default character encoding.  The <code>{@link
  * PrintWriter}</code> class should be used in situations that require writing
  * characters rather than bytes.
+ * 由印刷的所有字符PrintStream被转换成使用平台的默认字符编码字节。
+ * 在需要编写字符而不是字节的情况下，应使用PrintWriter类。
  *
  * @author     Frank Yellin
  * @author     Mark Reinhold
@@ -125,6 +131,7 @@ public class PrintStream extends FilterOutputStream
 
     /**
      * Creates a new print stream.  This stream will not flush automatically.
+     * 创建一个新的打印流。 此流不会自动刷新。
      *
      * @param  out        The output stream to which values and objects will be
      *                    printed
@@ -137,6 +144,7 @@ public class PrintStream extends FilterOutputStream
 
     /**
      * Creates a new print stream.
+     * 创建一个新的打印流。
      *
      * @param  out        The output stream to which values and objects will be
      *                    printed
@@ -153,6 +161,7 @@ public class PrintStream extends FilterOutputStream
 
     /**
      * Creates a new print stream.
+     * 创建一个新的打印流。
      *
      * @param  out        The output stream to which values and objects will be
      *                    printed
@@ -184,6 +193,8 @@ public class PrintStream extends FilterOutputStream
      * OutputStreamWriter}, which will encode characters using the
      * {@linkplain java.nio.charset.Charset#defaultCharset() default charset}
      * for this instance of the Java virtual machine.
+     * 使用指定的文件名创建新的打印流，无需自动换行。 这个方便的构造函数创建必要的中间体OutputStreamWriter ，
+     * 它将使用Java虚拟机的这个实例使用default charset对字符进行编码。
      *
      * @param  fileName
      *         The name of the file to use as the destination of this print
@@ -214,6 +225,8 @@ public class PrintStream extends FilterOutputStream
      * the necessary intermediate {@link java.io.OutputStreamWriter
      * OutputStreamWriter}, which will encode characters using the provided
      * charset.
+     * 创建一个新的打印流，不需要自动换行，具有指定的文件名和字符集。
+     * 这个方便的构造函数创建必要的中间体OutputStreamWriter ，它将使用提供的字符集对字符进行编码。
      *
      * @param  fileName
      *         The name of the file to use as the destination of this print
@@ -255,6 +268,8 @@ public class PrintStream extends FilterOutputStream
      * which will encode characters using the {@linkplain
      * java.nio.charset.Charset#defaultCharset() default charset} for this
      * instance of the Java virtual machine.
+     * 使用指定的文件创建一个新的打印流，而不需要自动换行。 这个方便的构造函数创建必要的中间体OutputStreamWriter ，
+     * 它将使用Java虚拟机的这个实例使用default charset对字符进行编码。
      *
      * @param  file
      *         The file to use as the destination of this print stream.  If the
@@ -285,6 +300,8 @@ public class PrintStream extends FilterOutputStream
      * the necessary intermediate {@link java.io.OutputStreamWriter
      * OutputStreamWriter}, which will encode characters using the provided
      * charset.
+     * 使用指定的文件和字符集创建新的打印流，而不需要自动换行。
+     * 这个方便的构造函数创建必要的中间体OutputStreamWriter ，它将使用提供的字符集对字符进行编码。
      *
      * @param  file
      *         The file to use as the destination of this print stream.  If the
@@ -328,6 +345,7 @@ public class PrintStream extends FilterOutputStream
     /**
      * Flushes the stream.  This is done by writing any buffered output bytes to
      * the underlying output stream and then flushing that stream.
+     * 刷新流。 这是通过将任何缓冲的输出字节写入底层输出流，然后刷新该流来完成的。
      *
      * @see        java.io.OutputStream#flush()
      */
@@ -348,6 +366,7 @@ public class PrintStream extends FilterOutputStream
     /**
      * Closes the stream.  This is done by flushing the stream and then closing
      * the underlying output stream.
+     * 关闭流。 这是通过刷新流，然后关闭底层输出流来完成的。
      *
      * @see        java.io.OutputStream#close()
      */
@@ -377,6 +396,9 @@ public class PrintStream extends FilterOutputStream
      * on the underlying output stream throws an
      * <code>InterruptedIOException</code>, then the <code>PrintStream</code>
      * converts the exception back into an interrupt by doing:
+     * 刷新流并检查其错误状态。 内部错误状态设置为true当底层输出流引发IOException以外的InterruptedIOException ，
+     * 当调用setError方法时。 如果底层输出流上的一个InterruptedIOException引发了一个InterruptedIOException ，
+     * 那么PrintStream会通过执行以下PrintStream将PrintStream转换为中断：
      * <pre>
      *     Thread.currentThread().interrupt();
      * </pre>
@@ -399,10 +421,12 @@ public class PrintStream extends FilterOutputStream
 
     /**
      * Sets the error state of the stream to <code>true</code>.
+     * 将流的错误状态设置为true 。
      *
      * <p> This method will cause subsequent invocations of {@link
      * #checkError()} to return <tt>true</tt> until {@link
      * #clearError()} is invoked.
+     * 此方法将导致后续调用checkError()返回true直到clearError()被调用。
      *
      * @since JDK1.1
      */
@@ -432,11 +456,13 @@ public class PrintStream extends FilterOutputStream
      * Writes the specified byte to this stream.  If the byte is a newline and
      * automatic flushing is enabled then the <code>flush</code> method will be
      * invoked.
+     * 将指定的字节写入此流。 如果字节是换行符，并且启用自动刷新，则将调用flush方法。
      *
      * <p> Note that the byte is written as given; to write a character that
      * will be translated according to the platform's default character
      * encoding, use the <code>print(char)</code> or <code>println(char)</code>
      * methods.
+     * 请注意，该字节写为给定; 根据平台的默认字符编码编写一个将被翻译的字符，使用print(char)或println(char)方法。
      *
      * @param  b  The byte to be written
      * @see #print(char)
@@ -463,11 +489,14 @@ public class PrintStream extends FilterOutputStream
      * Writes <code>len</code> bytes from the specified byte array starting at
      * offset <code>off</code> to this stream.  If automatic flushing is
      * enabled then the <code>flush</code> method will be invoked.
+     * 从指定的字节数组写入len字节，从偏移量off开始到此流。 如果启用自动冲洗，则将调用flush方法。
      *
      * <p> Note that the bytes will be written as given; to write characters
      * that will be translated according to the platform's default character
      * encoding, use the <code>print(char)</code> or <code>println(char)</code>
      * methods.
+     * 请注意，字节将按照给定的方式写入; 要根据平台的默认字符编码来编写将被翻译的字符，
+     * 请使用print(char)或println(char)方法。
      *
      * @param  buf   A byte array
      * @param  off   Offset from which to start taking bytes
@@ -564,6 +593,8 @@ public class PrintStream extends FilterOutputStream
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the
      * <code>{@link #write(int)}</code> method.
+     * 打印布尔值。 由String.valueOf(boolean)生成的字符串根据平台的默认字符编码被翻译成字节，
+     * 这些字节的写法方式完全符合write(int)要求。
      *
      * @param      b   The <code>boolean</code> to be printed
      */
@@ -576,6 +607,8 @@ public class PrintStream extends FilterOutputStream
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the
      * <code>{@link #write(int)}</code> method.
+     * 打印一个字符 根据平台的默认字符编码，该字符被转换成一个或多个字节，
+     * 这些字节的write(int)完全按照write(int)方式编写。
      *
      * @param      c   The <code>char</code> to be printed
      */
@@ -589,6 +622,8 @@ public class PrintStream extends FilterOutputStream
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the
      * <code>{@link #write(int)}</code> method.
+     * 打印一个整数。 由String.valueOf(int)生成的字符串根据平台的默认字符编码被翻译成字节，
+     * 这些字节是按照write(int)方法的方式编写的。
      *
      * @param      i   The <code>int</code> to be printed
      * @see        java.lang.Integer#toString(int)
@@ -603,6 +638,8 @@ public class PrintStream extends FilterOutputStream
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the
      * <code>{@link #write(int)}</code> method.
+     * 打印一个长整数。 由String.valueOf(long)生成的字符串根据平台的默认字符编码转换为字节，
+     * 这些字节按照write(int)的方式写入。
      *
      * @param      l   The <code>long</code> to be printed
      * @see        java.lang.Long#toString(long)
@@ -617,6 +654,8 @@ public class PrintStream extends FilterOutputStream
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the
      * <code>{@link #write(int)}</code> method.
+     * 打印浮点数。 由String.valueOf(float)生成的字符串根据平台的默认字符编码被翻译成字节，
+     * 这些字节是按照write(int)方法的方式编写的。
      *
      * @param      f   The <code>float</code> to be printed
      * @see        java.lang.Float#toString(float)
@@ -631,6 +670,8 @@ public class PrintStream extends FilterOutputStream
      * bytes according to the platform's default character encoding, and these
      * bytes are written in exactly the manner of the <code>{@link
      * #write(int)}</code> method.
+     * 打印双精度浮点数。 由String.valueOf(double)生成的字符串根据平台的默认字符编码被翻译成字节，
+     * 这些字节按照write(int)的方式写入。
      *
      * @param      d   The <code>double</code> to be printed
      * @see        java.lang.Double#toString(double)
@@ -644,6 +685,7 @@ public class PrintStream extends FilterOutputStream
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the
      * <code>{@link #write(int)}</code> method.
+     * 打印字符数组。 根据平台的默认字符编码，这些字符被转换为字节，这些字节是以完全符合write(int)方法的方式编写的。
      *
      * @param      s   The array of chars to be printed
      *
@@ -659,6 +701,8 @@ public class PrintStream extends FilterOutputStream
      * converted into bytes according to the platform's default character
      * encoding, and these bytes are written in exactly the manner of the
      * <code>{@link #write(int)}</code> method.
+     * 打印字符串。 如果参数是null那么打印字符串"null" 。
+     * 否则，字符串的字符将根据平台的默认字符编码转换为字节，并且这些字节以write(int)的方式写入。
      *
      * @param      s   The <code>String</code> to be printed
      */
@@ -675,6 +719,8 @@ public class PrintStream extends FilterOutputStream
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the
      * <code>{@link #write(int)}</code> method.
+     * 打印一个对象。 由String.valueOf(Object)方法生成的字符串根据平台的默认字符编码进行转换为字节，
+     * 这些字节的write(int)完全按照write(int)的方式编写。
      *
      * @param      obj   The <code>Object</code> to be printed
      * @see        java.lang.Object#toString()
@@ -691,6 +737,7 @@ public class PrintStream extends FilterOutputStream
      * line separator string is defined by the system property
      * <code>line.separator</code>, and is not necessarily a single newline
      * character (<code>'\n'</code>).
+     * 通过写入行分隔符字符串来终止当前行。 行分隔符字符串由系统属性line.separator定义，并不一定是单个换行符（ '\n' ）。
      */
     public void println() {
         newLine();
@@ -700,6 +747,7 @@ public class PrintStream extends FilterOutputStream
      * Prints a boolean and then terminate the line.  This method behaves as
      * though it invokes <code>{@link #print(boolean)}</code> and then
      * <code>{@link #println()}</code>.
+     * 打印一个布尔值，然后终止该行。 该方法的行为就像调用print(boolean)然后println() 。
      *
      * @param x  The <code>boolean</code> to be printed
      */
@@ -829,9 +877,11 @@ public class PrintStream extends FilterOutputStream
     /**
      * A convenience method to write a formatted string to this output stream
      * using the specified format string and arguments.
+     * 使用指定的格式字符串和参数将格式化的字符串写入此输出流的便利方法。
      *
      * <p> An invocation of this method of the form <tt>out.printf(format,
      * args)</tt> behaves in exactly the same way as the invocation
+     * 调用此方法的形式out.printf(format, args)的行为方式与调用完全相同
      *
      * <pre>
      *     out.format(format, args) </pre>
@@ -874,9 +924,11 @@ public class PrintStream extends FilterOutputStream
     /**
      * A convenience method to write a formatted string to this output stream
      * using the specified format string and arguments.
+     * 使用指定的格式字符串和参数将格式化的字符串写入此输出流的便利方法。
      *
      * <p> An invocation of this method of the form <tt>out.printf(l, format,
      * args)</tt> behaves in exactly the same way as the invocation
+     * 调用此方法的形式out.printf(l, format, args)的行为方式与调用完全相同
      *
      * <pre>
      *     out.format(l, format, args) </pre>
@@ -924,10 +976,12 @@ public class PrintStream extends FilterOutputStream
     /**
      * Writes a formatted string to this output stream using the specified
      * format string and arguments.
+     * 使用指定的格式字符串和参数将格式化的字符串写入此输出流。
      *
      * <p> The locale always used is the one returned by {@link
      * java.util.Locale#getDefault() Locale.getDefault()}, regardless of any
      * previous invocations of other formatting methods on this object.
+     * 始终使用的区域设置是由Locale.getDefault()返回的区域设置，无论以前在此对象上调用其他格式化方法。
      *
      * @param  format
      *         A format string as described in <a
@@ -980,6 +1034,7 @@ public class PrintStream extends FilterOutputStream
     /**
      * Writes a formatted string to this output stream using the specified
      * format string and arguments.
+     * 使用指定的格式字符串和参数将格式化的字符串写入此输出流。
      *
      * @param  l
      *         The {@linkplain java.util.Locale locale} to apply during
@@ -1036,9 +1091,11 @@ public class PrintStream extends FilterOutputStream
 
     /**
      * Appends the specified character sequence to this output stream.
+     * 将指定的字符序列附加到此输出流。
      *
      * <p> An invocation of this method of the form <tt>out.append(csq)</tt>
      * behaves in exactly the same way as the invocation
+     * 调用此方法的形式out.append(csq)的行为方式与调用完全相同
      *
      * <pre>
      *     out.print(csq.toString()) </pre>
@@ -1048,6 +1105,8 @@ public class PrintStream extends FilterOutputStream
      * appended.  For instance, invoking then <tt>toString</tt> method of a
      * character buffer will return a subsequence whose content depends upon
      * the buffer's position and limit.
+     * 取决于toString字符序列csq本说明书中，整个序列可以不追加。
+     * 例如，然后调用一个字符缓冲区的toString方法将返回一个序列，其内容取决于缓冲区的位置和限制。
      *
      * @param  csq
      *         The character sequence to append.  If <tt>csq</tt> is
@@ -1069,10 +1128,12 @@ public class PrintStream extends FilterOutputStream
     /**
      * Appends a subsequence of the specified character sequence to this output
      * stream.
+     * 将指定字符序列的子序列附加到此输出流。
      *
      * <p> An invocation of this method of the form <tt>out.append(csq, start,
      * end)</tt> when <tt>csq</tt> is not <tt>null</tt>, behaves in
      * exactly the same way as the invocation
+     * 形式的这种方法的调用时out.append(csq, start, end) csq不是null，行为以完全相同的方式调用
      *
      * <pre>
      *     out.print(csq.subSequence(start, end).toString()) </pre>
@@ -1107,9 +1168,11 @@ public class PrintStream extends FilterOutputStream
 
     /**
      * Appends the specified character to this output stream.
+     * 将指定的字符附加到此输出流。
      *
      * <p> An invocation of this method of the form <tt>out.append(c)</tt>
      * behaves in exactly the same way as the invocation
+     * 调用此方法的形式out.append(c)的行为方式与调用完全相同
      *
      * <pre>
      *     out.print(c) </pre>

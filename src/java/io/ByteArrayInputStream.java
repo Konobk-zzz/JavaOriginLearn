@@ -31,10 +31,14 @@ package java.io;
  * may be read from the stream. An internal
  * counter keeps track of the next byte to
  * be supplied by the <code>read</code> method.
+ * A ByteArrayInputStream包含一个内部缓冲区，其中包含可以从流中读取的字节。
+ * 内部计数器跟踪read方法要提供的下一个字节。
  * <p>
  * Closing a <tt>ByteArrayInputStream</tt> has no effect. The methods in
  * this class can be called after the stream has been closed without
  * generating an <tt>IOException</tt>.
+ * 关闭ByteArrayInputStream没有任何效果。
+ * 在关闭流之后，可以调用此类中的方法，而不生成IOException 。
  *
  * @author  Arthur van Hoff
  * @see     java.io.StringBufferInputStream
@@ -50,6 +54,8 @@ class ByteArrayInputStream extends InputStream {
      * only bytes that can ever be read from the
      * stream;  element <code>buf[pos]</code> is
      * the next byte to be read.
+     * 由数据流的创建者提供的字节数组。 元素buf[0]至buf[count-1]是唯一可以从流中读取的字节;
+     * 元素buf[pos]是要读取的下一个字节。
      */
     protected byte buf[];
 
@@ -59,6 +65,9 @@ class ByteArrayInputStream extends InputStream {
      * and not larger than the value of <code>count</code>.
      * The next byte to be read from the input stream buffer
      * will be <code>buf[pos]</code>.
+     * 从输入流缓冲区读取的下一个字符的索引。
+     * 该值应始终为非负数，不得大于count的值。
+     * 要从输入流缓冲区读取的下一个字节将为buf[pos] 。
      */
     protected int pos;
 
@@ -69,9 +78,12 @@ class ByteArrayInputStream extends InputStream {
      * position within the buffer by the <code>mark()</code> method.
      * The current buffer position is set to this point by the
      * <code>reset()</code> method.
+     * 流中当前标记的位置。 当构造时，ByteArrayInputStream对象在默认情况下标记为零。
+     * 它们可以通过mark()方法标记在缓冲区内的另一个位置。 目前的缓冲区位置由reset()方法设置。
      * <p>
      * If no mark has been set, then the value of mark is the offset
      * passed to the constructor (or 0 if the offset was not supplied).
+     * 如果没有设置标记，则标记的值是传递给构造函数的偏移量（如果没有提供偏移量，则为0）。
      *
      * @since   JDK1.1
      */
@@ -85,6 +97,9 @@ class ByteArrayInputStream extends InputStream {
      * It  is one greater than the position of
      * the last byte within <code>buf</code> that
      * can ever be read  from the input stream buffer.
+     * 索引大于输入流缓冲区中的最后一个有效字符。
+     * 该值应始终为非负数，不得大于buf的长度。
+     * 它大于buf中可以从输入流缓冲区读取的最后一个字节的位置。
      */
     protected int count;
 
@@ -97,6 +112,8 @@ class ByteArrayInputStream extends InputStream {
      * is <code>0</code> and the initial value
      * of  <code>count</code> is the length of
      * <code>buf</code>.
+     * 创建一个ByteArrayInputStream ，使其使用buf作为其缓冲区数组。
+     * 缓冲区数组不被复制。 的初始值pos是0和的初始值count是长度buf
      *
      * @param   buf   the input buffer.
      */
@@ -115,6 +132,9 @@ class ByteArrayInputStream extends InputStream {
      * and <code>buf.length</code>.
      * The buffer array is not copied. The buffer's mark is
      * set to the specified offset.
+     * 创建ByteArrayInputStream使用buf作为其缓冲器阵列。
+     * 的初始值pos是offset和的初始值count是的最小offset+length和buf.length 。
+     * 缓冲区数组不被复制。 缓冲区的标记设置为指定的偏移量。
      *
      * @param   buf      the input buffer.
      * @param   offset   the offset in the buffer of the first byte to read.

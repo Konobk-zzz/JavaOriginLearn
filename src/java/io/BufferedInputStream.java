@@ -43,6 +43,12 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * recent <code>mark</code> operation to be
  * reread before new bytes are  taken from
  * the contained input stream.
+ * A BufferedInputStream为另一个输入流添加了功能，
+ * 即缓冲输入和支持mark和reset方法的功能。
+ * 当创建BufferedInputStream时，将创建一个内部缓冲区数组。
+ * 当从流中读取或跳过字节时，内部缓冲区将根据需要从所包含的输入流中重新填充，
+ * 一次有多个字节。 mark操作会记住输入流中的一点，
+ * 并且reset操作会导致从最近的mark操作之后读取的所有字节在从包含的输入流中取出新的字节之前重新读取。
  *
  * @author  Arthur van Hoff
  * @since   JDK1.0
@@ -64,6 +70,7 @@ class BufferedInputStream extends FilterInputStream {
      * The internal buffer array where the data is stored. When necessary,
      * it may be replaced by another array of
      * a different size.
+     * 存储数据的内部缓冲区数组。 必要时，可以用不同大小的另一个阵列代替。
      */
     protected volatile byte buf[];
 
@@ -72,6 +79,8 @@ class BufferedInputStream extends FilterInputStream {
      * necessary because closes can be asynchronous. We use nullness
      * of buf[] as primary indicator that this stream is closed. (The
      * "in" field is also nulled out on close.)
+     * 原子更新器为 buf 提供CAS。这是必须的，因为关闭可能是异步的。我们通过空的 buf[]
+     * 作为流关闭的主要标记。
      */
     private static final
         AtomicReferenceFieldUpdater<BufferedInputStream, byte[]> bufUpdater =
@@ -86,12 +95,15 @@ class BufferedInputStream extends FilterInputStream {
      * elements <code>buf[0]</code>  through <code>buf[count-1]
      * </code>contain buffered input data obtained
      * from the underlying  input stream.
+     * 索引比缓冲区中最后一个有效字节大 1。
+     * 此值始终在0到buf.length ; 元素buf[0]至buf[count-1]包含从底层输入流获得的缓冲输入数据。
      */
     protected int count;
 
     /**
      * The current position in the buffer. This is the index of the next
      * character to be read from the <code>buf</code> array.
+     * 缓冲区中的当前位置。 这是从buf数组读取的下一个字符的索引。
      * <p>
      * This value is always in the range <code>0</code>
      * through <code>count</code>. If it is less
@@ -101,6 +113,8 @@ class BufferedInputStream extends FilterInputStream {
      * the  next <code>read</code> or <code>skip</code>
      * operation will require more bytes to be
      * read from the contained  input stream.
+     * 此值始终在0到count 。 如果小于count ，那么buf[pos]是作为输入提供的下一个字节;
+     * 如果等于count ，那么接下来的read或skip操作将需要从包含的输入流读取更多的字节。
      *
      * @see     java.io.BufferedInputStream#buf
      */
@@ -109,6 +123,7 @@ class BufferedInputStream extends FilterInputStream {
     /**
      * The value of the <code>pos</code> field at the time the last
      * <code>mark</code> method was called.
+     * pos字段在最后一个mark方法被调用时的值。
      * <p>
      * This value is always
      * in the range <code>-1</code> through <code>pos</code>.
@@ -129,6 +144,11 @@ class BufferedInputStream extends FilterInputStream {
      * be discarded unless and until the difference
      * between <code>pos</code> and <code>markpos</code>
      * exceeds <code>marklimit</code>.
+     * 此值始终在-1到pos 。 如果输入流中没有标记位置，则此字段为-1 。
+     * 如果在输入流中有一个标记的位置，那么buf[markpos]是reset操作后作为输入提供的第一个字节。
+     * 如果markpos不是-1 ，然后从位置的所有字节buf[markpos]通过buf[pos-1]必须保留在
+     * 缓冲器阵列中（尽管它们可以被移动到缓冲器阵列中的另一个处，与适当的调整的值count ， pos和markpos ）;
+     * 除非pos和markpos之间的markpos超过marklimit 。
      *
      * @see     java.io.BufferedInputStream#mark(int)
      * @see     java.io.BufferedInputStream#pos
@@ -139,10 +159,13 @@ class BufferedInputStream extends FilterInputStream {
      * The maximum read ahead allowed after a call to the
      * <code>mark</code> method before subsequent calls to the
      * <code>reset</code> method fail.
+     * 允许调用了 mark 方法后，在子队列调用 reset 方法前超过 maximum限制后失败。
      * Whenever the difference between <code>pos</code>
      * and <code>markpos</code> exceeds <code>marklimit</code>,
      * then the  mark may be dropped by setting
      * <code>markpos</code> to <code>-1</code>.
+     * 无论何时，当 pos 与 markpos 之间的差别超过 maximum的限制后，
+     * mark 可能被放弃，markpos 被设置为 -1
      *
      * @see     java.io.BufferedInputStream#mark(int)
      * @see     java.io.BufferedInputStream#reset()
@@ -296,6 +319,7 @@ class BufferedInputStream extends FilterInputStream {
     /**
      * Reads bytes from this byte-input stream into the specified byte array,
      * starting at the given offset.
+     * 从给定的偏移开始，将字节输入流中的字节读入指定的字节数组。
      *
      * <p> This method implements the general contract of the corresponding
      * <code>{@link InputStream#read(byte[], int, int) read}</code> method of
@@ -304,22 +328,29 @@ class BufferedInputStream extends FilterInputStream {
      * invoking the <code>read</code> method of the underlying stream.  This
      * iterated <code>read</code> continues until one of the following
      * conditions becomes true: <ul>
+     * 该方法执行InputStream类对应的read方法的一般合同。 作为一个额外的方便，它尝试通过重复
+     * 调用基础流的read方法来读取尽可能多的字节。 此迭代read继续，直至read条件之一为止：
      *
      *   <li> The specified number of bytes have been read,
+     *   指定的字节数已被读取，
      *
      *   <li> The <code>read</code> method of the underlying stream returns
      *   <code>-1</code>, indicating end-of-file, or
+     *   底层流的read方法返回-1 ，表示文件结尾，或
      *
      *   <li> The <code>available</code> method of the underlying stream
      *   returns zero, indicating that further input requests would block.
+     *   底层流的available方法返回零，表示进一步的输入请求将阻塞。
      *
      * </ul> If the first <code>read</code> on the underlying stream returns
      * <code>-1</code> to indicate end-of-file then this method returns
      * <code>-1</code>.  Otherwise this method returns the number of bytes
      * actually read.
+     * 如果基础流上的第一个read返回-1以指示文件结束，则此方法返回-1 。 否则，此方法返回实际读取的字节数。
      *
      * <p> Subclasses of this class are encouraged, but not required, to
      * attempt to read as many bytes as possible in the same fashion.
+     * 鼓励这个类的子类，但不是必需的，尝试以相同的方式读取尽可能多的字节。
      *
      * @param      b     destination buffer.
      * @param      off   offset at which to start storing bytes.
@@ -358,6 +389,7 @@ class BufferedInputStream extends FilterInputStream {
     /**
      * See the general contract of the <code>skip</code>
      * method of <code>InputStream</code>.
+     * 见普通 skip的方法 InputStream 。
      *
      * @exception  IOException  if the stream does not support seek,
      *                          or if this input stream has been closed by
@@ -398,6 +430,7 @@ class BufferedInputStream extends FilterInputStream {
      * This method returns the sum of the number of bytes remaining to be read in
      * the buffer (<code>count&nbsp;- pos</code>) and the result of calling the
      * {@link java.io.FilterInputStream#in in}.available().
+     * 该方法返回缓冲区（ count - pos ）中要读取的剩余字节数和调用in .available（）的结果。
      *
      * @return     an estimate of the number of bytes that can be read (or skipped
      *             over) from this input stream without blocking.

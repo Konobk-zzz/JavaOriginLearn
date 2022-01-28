@@ -31,12 +31,17 @@ package java.io;
  * stream (the <i>underlying</i> output stream) which it uses as its
  * basic sink of data, but possibly transforming the data along the
  * way or providing additional functionality.
+ * 这个类是过滤输出流的所有类的超类。 这些流位于已经存在的输出流（ 底层输出流） 之上 ，
+ * 它使用它作为数据的基本接收器，但是可能沿着数据方向转换或提供附加功能。
  * <p>
  * The class <code>FilterOutputStream</code> itself simply overrides
  * all methods of <code>OutputStream</code> with versions that pass
  * all requests to the underlying output stream. Subclasses of
  * <code>FilterOutputStream</code> may further override some of these
  * methods as well as provide additional methods and fields.
+ * 类FilterOutputStream本身就简单地覆盖了所有OutputStream的方法，
+ * OutputStream版本将所有请求传递给底层输出流。
+ * FilterOutputStream的FilterOutputStream可以进一步覆盖这些方法中的一些，并提供其他方法和字段。
  *
  * @author  Jonathan Payne
  * @since   JDK1.0

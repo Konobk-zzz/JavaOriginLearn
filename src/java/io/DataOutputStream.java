@@ -29,6 +29,8 @@ package java.io;
  * A data output stream lets an application write primitive Java data
  * types to an output stream in a portable way. An application can
  * then use a data input stream to read the data back in.
+ * 数据输出流使应用程序以便携式方式将原始Java数据类型写入输出流。
+ * 然后应用程序可以使用数据输入流来读取数据。
  *
  * @author  unascribed
  * @see     java.io.DataInputStream
@@ -39,6 +41,7 @@ class DataOutputStream extends FilterOutputStream implements DataOutput {
     /**
      * The number of bytes written to the data output stream so far.
      * If this counter overflows, it will be wrapped to Integer.MAX_VALUE.
+     * 到目前为止写入数据输出流的字节数。 如果此计数器溢出，它将被包装到Integer.MAX_VALUE。
      */
     protected int written;
 
@@ -51,6 +54,7 @@ class DataOutputStream extends FilterOutputStream implements DataOutput {
      * Creates a new data output stream to write data to the specified
      * underlying output stream. The counter <code>written</code> is
      * set to zero.
+     * 创建一个新的数据输出流，以将数据写入指定的底层输出流。 计数器written设置为零。
      *
      * @param   out   the underlying output stream, to be saved for later
      *                use.

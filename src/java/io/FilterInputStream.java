@@ -38,6 +38,11 @@ package java.io;
  * may further override some of  these methods
  * and may also provide additional methods
  * and fields.
+ * FilterInputStream包含一些其他输入流，它用作其基本的数据源，可能会沿途转换数据或提供附加功能。
+ * FilterInputStream本身简单地覆盖了所有InputStream的方法，
+ * InputStream版本将所有请求传递给包含的输入流。
+ * FilterInputStream的FilterInputStream可以进一步覆盖这些方法中的一些，
+ * 并且还可以提供附加的方法和字段。
  *
  * @author  Jonathan Payne
  * @since   JDK1.0
@@ -46,6 +51,7 @@ public
 class FilterInputStream extends InputStream {
     /**
      * The input stream to be filtered.
+     * 要过滤的输入流。
      */
     protected volatile InputStream in;
 
@@ -54,6 +60,7 @@ class FilterInputStream extends InputStream {
      * by assigning the  argument <code>in</code>
      * to the field <code>this.in</code> so as
      * to remember it for later use.
+     * 通过将参数 in给字段 this.in创建一个 FilterInputStream ，以便记住它以供以后使用。
      *
      * @param   in   the underlying input stream, or <code>null</code> if
      *          this instance is to be created without an underlying stream.
@@ -70,9 +77,12 @@ class FilterInputStream extends InputStream {
      * <code>-1</code> is returned. This method blocks until input data
      * is available, the end of the stream is detected, or an exception
      * is thrown.
+     * 从该输入流读取下一个数据字节。 值字节作为int返回为0到255 。 如果没有字节可用，因为流已经到达，则返回值-1 。
+     * 该方法阻塞直到输入数据可用，检测到流的结尾，或抛出异常。
      * <p>
      * This method
      * simply performs <code>in.read()</code> and returns the result.
+     * 该方法简单地执行in.read()并返回结果。
      *
      * @return     the next byte of data, or <code>-1</code> if the end of the
      *             stream is reached.
@@ -87,6 +97,7 @@ class FilterInputStream extends InputStream {
      * Reads up to <code>byte.length</code> bytes of data from this
      * input stream into an array of bytes. This method blocks until some
      * input is available.
+     * 从该输入流读取高达byte.length字节的数据到字节数组。 此方法将阻塞，直到某些输入可用。
      * <p>
      * This method simply performs the call
      * <code>read(b, 0, b.length)</code> and returns
@@ -95,6 +106,8 @@ class FilterInputStream extends InputStream {
      * certain subclasses of  <code>FilterInputStream</code>
      * depend on the implementation strategy actually
      * used.
+     * 此方法只需执行调用read(b, 0, b.length)并返回结果。 重要的是不要做in.read(b) ;
+     * FilterInputStream的某些子FilterInputStream取决于实际使用的实现策略。
      *
      * @param      b   the buffer into which the data is read.
      * @return     the total number of bytes read into the buffer, or

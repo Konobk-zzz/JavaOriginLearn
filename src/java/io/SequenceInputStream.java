@@ -38,6 +38,9 @@ import java.util.Vector;
  * whereupon it reads from the second one,
  * and so on, until end of file is reached
  * on the last of the contained input streams.
+ * A SequenceInputStream表示其他输入流的逻辑级联。
+ * 它从一个有序的输入流集合开始，从第一个读取到文件的结尾，
+ * 然后从第二个文件读取，依此类推，直到最后一个输入流达到文件的结尾。
  *
  * @author  Author van Hoff
  * @since   JDK1.0
@@ -59,6 +62,10 @@ class SequenceInputStream extends InputStream {
      * each input stream from the enumeration
      * is exhausted, it is closed by calling its
      * <code>close</code> method.
+     * 通过记住参数来初始化新创建的SequenceInputStream ，
+     * 该参数必须是Enumeration ，它生成运行时类型为InputStream 。
+     * 由枚举产生的输入流将按顺序读取，以提供要从此SequenceInputStream读取的字节。
+     * 从枚举的每个输入流都用完后，通过调用其close方法关闭它。
      *
      * @param   e   an enumeration of input streams.
      * @see     java.util.Enumeration
@@ -80,6 +87,8 @@ class SequenceInputStream extends InputStream {
      * will be read in order, first <code>s1</code>
      * and then <code>s2</code>, to provide the
      * bytes to be read from this <code>SequenceInputStream</code>.
+     * 通过记住两个 SequenceInputStream来初始化新创建的 SequenceInputStream ，
+     * 这两个参数将按顺序读取，首先是 s1 ，然后是 s2 ，以提供要从该 SequenceInputStream读取的字节。
      *
      * @param   s1   the first input stream to read.
      * @param   s2   the second input stream to read.
@@ -125,11 +134,13 @@ class SequenceInputStream extends InputStream {
      * <p>
      * This method simply calls {@code available} of the current underlying
      * input stream and returns the result.
+     * 此方法仅调用available当前底层输入流的并返回结果。
      *
      * @return an estimate of the number of bytes that can be read (or
      *         skipped over) from the current underlying input stream
      *         without blocking or {@code 0} if this input stream
      *         has been closed by invoking its {@link #close()} method
+     *         可从当前底层输入流中读取（或跳过）的字节数的不阻塞或估计 0该输入流是否已调用它的关闭 close()方法
      * @exception  IOException  if an I/O error occurs.
      *
      * @since   JDK1.1

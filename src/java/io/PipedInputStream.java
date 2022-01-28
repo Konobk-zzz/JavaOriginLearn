@@ -42,6 +42,11 @@ package java.io;
  * A pipe is said to be <a name="BROKEN"> <i>broken</i> </a> if a
  * thread that was providing data bytes to the connected
  * piped output stream is no longer alive.
+ * 管道输入流应连接到管道输出流; 管道输入流然后提供写入管道输出流的任何数据字节。
+ * 典型地，数据被从一个读PipedInputStream对象由一个线程并且数据被写入到对应的PipedOutputStream通过一些其它线程。
+ * 不建议尝试从单个线程使用这两个对象，因为它可能会使线程死锁。
+ * 管道输入流包含一个缓冲区，在读取操作中将读取操作与限制内的操作相分离。
+ * 的管道被认为是broken如果正在提供的数据字节到连接的管道输出流中的线程不再存活。
  *
  * @author  James Gosling
  * @see     java.io.PipedOutputStream
@@ -72,6 +77,7 @@ public class PipedInputStream extends InputStream {
 
     /**
      * The circular buffer into which incoming data is placed.
+     * 环形的缓冲池
      * @since   JDK1.1
      */
     protected byte buffer[];
@@ -81,6 +87,8 @@ public class PipedInputStream extends InputStream {
      * next byte of data will be stored when received from the connected
      * piped output stream. <code>in&lt;0</code> implies the buffer is empty,
      * <code>in==out</code> implies the buffer is full
+     * 在从连接的管道输出流接收到的数据的下一个字节将被存储的循环缓冲区中的位置的索引。
+     * in<0意味着缓冲区为空， in==out意味着缓冲区已满
      * @since   JDK1.1
      */
     protected int in = -1;
@@ -88,6 +96,7 @@ public class PipedInputStream extends InputStream {
     /**
      * The index of the position in the circular buffer at which the next
      * byte of data will be read by this piped input stream.
+     * 循环缓冲区中的位置的索引，在该缓冲区中下一个字节的数据将被该管道输入流读取。
      * @since   JDK1.1
      */
     protected int out = 0;
@@ -98,6 +107,7 @@ public class PipedInputStream extends InputStream {
      * stream <code>src</code>. Data bytes written
      * to <code>src</code> will then be  available
      * as input from this stream.
+     * 创建一个PipedInputStream ，使其连接到管道输出流src 。 写入src数据字节将作为此流的输入。
      *
      * @param      src   the stream to connect to.
      * @exception  IOException  if an I/O error occurs.
@@ -113,6 +123,8 @@ public class PipedInputStream extends InputStream {
      * the pipe's buffer.
      * Data bytes written to <code>src</code> will then
      * be available as input from this stream.
+     * 创建一个PipedInputStream ，使其连接到管道输出流src ，
+     * 并为管道缓冲区使用指定的管道大小。 写入src数据字节将作为此流的输入。
      *
      * @param      src   the stream to connect to.
      * @param      pipeSize the size of the pipe's buffer.
@@ -133,6 +145,7 @@ public class PipedInputStream extends InputStream {
      * It must be {@linkplain java.io.PipedOutputStream#connect(
      * java.io.PipedInputStream) connected} to a
      * <code>PipedOutputStream</code> before being used.
+     * 创建一个PipedInputStream ，使其尚未connected 。 在使用前必须是connected到PipedOutputStream 。
      */
     public PipedInputStream() {
         initPipe(DEFAULT_PIPE_SIZE);
@@ -145,6 +158,8 @@ public class PipedInputStream extends InputStream {
      * It must be {@linkplain java.io.PipedOutputStream#connect(
      * java.io.PipedInputStream)
      * connected} to a <code>PipedOutputStream</code> before being used.
+     * 创建一个PipedInputStream ，以至于它还不是connected并且使用指定的管道大小作为管道的缓冲区。
+     * 在使用前必须是connected到PipedOutputStream 。
      *
      * @param      pipeSize the size of the pipe's buffer.
      * @exception  IllegalArgumentException if {@code pipeSize <= 0}.
@@ -167,6 +182,7 @@ public class PipedInputStream extends InputStream {
      * If this object is already connected to some
      * other piped output  stream, an <code>IOException</code>
      * is thrown.
+     * 使此管道输入流连接到管道输出流src 。 如果此对象已连接到其他管道输出流，则抛出IOException 。
      * <p>
      * If <code>src</code> is an
      * unconnected piped output stream and <code>snk</code>
@@ -181,6 +197,14 @@ public class PipedInputStream extends InputStream {
      * <p>
      * The two calls have the same effect.
      *
+     * 如果src是未连接的管道输出流，并且snk是未连接的管道输入流，则可以通过以下任一方式连接它们：
+     *
+     *   snk.connect(src)
+     * 或调用：
+     *
+     *   src.connect(snk)
+     * 两个调用有相同的效果。
+     *
      * @param      src   The piped output stream to connect to.
      * @exception  IOException  if an I/O error occurs.
      */
@@ -191,6 +215,7 @@ public class PipedInputStream extends InputStream {
     /**
      * Receives a byte of data.  This method will block if no input is
      * available.
+     * 接收一个字节的数据。 如果没有输入可用，此方法将阻塞。
      * @param b the byte being received
      * @exception IOException If the pipe is <a href="#BROKEN"> <code>broken</code></a>,
      *          {@link #connect(java.io.PipedOutputStream) unconnected},
@@ -290,8 +315,10 @@ public class PipedInputStream extends InputStream {
      * Reads the next byte of data from this piped input stream. The
      * value byte is returned as an <code>int</code> in the range
      * <code>0</code> to <code>255</code>.
+     * 从这个管道输入流读取数据的下一个字节。 值字节返回为int ，范围为0至255 。
      * This method blocks until input data is available, the end of the
      * stream is detected, or an exception is thrown.
+     * 该方法阻塞直到输入数据可用，检测到流的结尾，或抛出异常。
      *
      * @return     the next byte of data, or <code>-1</code> if the end of the
      *             stream is reached.
@@ -349,6 +376,9 @@ public class PipedInputStream extends InputStream {
      * otherwise, the method blocks until at least 1 byte of input is
      * available, end of the stream has been detected, or an exception is
      * thrown.
+     * 从这个管道输入流读取高达len字节的数据到字节数组。
+     * 如果达到数据流的结尾或len超过管道的缓冲区大小，则读取少于len字节。
+     * 如果len为零，则不读取字节并返回0; 否则，该方法将阻塞，直到输入的至少1个字节可用，已经检测到流的结尾，或抛出异常。
      *
      * @param      b     the buffer into which the data is read.
      * @param      off   the start offset in the destination array <code>b</code>
@@ -413,6 +443,7 @@ public class PipedInputStream extends InputStream {
     /**
      * Returns the number of bytes that can be read from this input
      * stream without blocking.
+     * 返回可以从该输入流读取而不阻塞的字节数。
      *
      * @return the number of bytes that can be read from this input stream
      *         without blocking, or {@code 0} if this input stream has been

@@ -41,6 +41,7 @@ package java.io;
  * @deprecated This class does not properly convert characters into bytes.  As
  *             of JDK&nbsp;1.1, the preferred way to create a stream from a
  *             string is via the <code>StringReader</code> class.
+ *             此类不会将字符正确转换为字节。 从JDK 1.1开始，从字符串创建流的首选方法是通过StringReader类。
  */
 @Deprecated
 public

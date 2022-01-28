@@ -37,10 +37,15 @@ import sun.nio.ch.FileChannelImpl;
  * for writing by only one <tt>FileOutputStream</tt> (or other
  * file-writing object) at a time.  In such situations the constructors in
  * this class will fail if the file involved is already open.
+ * 文件输出流是用于将数据写入到输出流File或一个FileDescriptor 。
+ * 文件是否可用或可能被创建取决于底层平台。 特别是某些平台允许一次只能打开一个文件
+ * 来写入一个FileOutputStream （或其他文件写入对象）。
+ * 在这种情况下，如果所涉及的文件已经打开，则此类中的构造函数将失败。
  *
  * <p><code>FileOutputStream</code> is meant for writing streams of raw bytes
  * such as image data. For writing streams of characters, consider using
  * <code>FileWriter</code>.
+ * FileOutputStream用于写入诸如图像数据的原始字节流。 对于写入字符流，请考虑使用FileWriter 。
  *
  * @author  Arthur van Hoff
  * @see     java.io.File
@@ -80,13 +85,17 @@ class FileOutputStream extends OutputStream
      * Creates a file output stream to write to the file with the
      * specified name. A new <code>FileDescriptor</code> object is
      * created to represent this file connection.
+     * 创建文件输出流以指定的名称写入文件。 创建一个新的FileDescriptor对象来表示此文件连接。
      * <p>
      * First, if there is a security manager, its <code>checkWrite</code>
      * method is called with <code>name</code> as its argument.
+     * 首先，如果有一个安全管理器，它的checkWrite方法name作为参数来调用。
      * <p>
      * If the file exists but is a directory rather than a regular file, does
      * not exist but cannot be created, or cannot be opened for any other
      * reason then a <code>FileNotFoundException</code> is thrown.
+     * 如果文件存在但是是一个目录而不是常规文件，不存在但不能创建，
+     * 或者由于任何其他原因无法打开，那么抛出一个FileNotFoundException 。
      *
      * @param      name   the system-dependent filename
      * @exception  FileNotFoundException  if the file exists but is a directory
@@ -107,13 +116,18 @@ class FileOutputStream extends OutputStream
      * bytes will be written to the end of the file rather than the beginning.
      * A new <code>FileDescriptor</code> object is created to represent this
      * file connection.
+     * 创建文件输出流以指定的名称写入文件。 如果第二个参数是true ，则字节将写入文件的末尾而不是开头。
+     * 创建一个新的FileDescriptor对象来表示此文件连接。
      * <p>
      * First, if there is a security manager, its <code>checkWrite</code>
      * method is called with <code>name</code> as its argument.
+     * 首先，如果有一个安全管理员，它的checkWrite方法是以name作为参数来调用的。
      * <p>
      * If the file exists but is a directory rather than a regular file, does
      * not exist but cannot be created, or cannot be opened for any other
      * reason then a <code>FileNotFoundException</code> is thrown.
+     * 如果文件存在但是是一个目录而不是常规文件，不存在但不能创建，或者由于任何其他原因无法打开，
+     * 那么抛出一个FileNotFoundException 。
      *
      * @param     name        the system-dependent file name
      * @param     append      if <code>true</code>, then bytes will be written
@@ -138,14 +152,17 @@ class FileOutputStream extends OutputStream
      * the specified <code>File</code> object. A new
      * <code>FileDescriptor</code> object is created to represent this
      * file connection.
+     * 创建文件输出流以写入由指定的File对象表示的文件。 创建一个新的FileDescriptor对象来表示此文件连接。
      * <p>
      * First, if there is a security manager, its <code>checkWrite</code>
      * method is called with the path represented by the <code>file</code>
      * argument as its argument.
+     * 首先，如果有一个安全管理器，它的checkWrite方法被调用与由file参数表示的路径作为其参数。
      * <p>
      * If the file exists but is a directory rather than a regular file, does
      * not exist but cannot be created, or cannot be opened for any other
      * reason then a <code>FileNotFoundException</code> is thrown.
+     * 如果文件存在但是是一个目录而不是常规文件，则不存在但不能创建，或者由于任何其他原因无法打开，因此抛出FileNotFoundException 。
      *
      * @param      file               the file to be opened for writing.
      * @exception  FileNotFoundException  if the file exists but is a directory
@@ -168,14 +185,19 @@ class FileOutputStream extends OutputStream
      * <code>true</code>, then bytes will be written to the end of the file
      * rather than the beginning. A new <code>FileDescriptor</code> object is
      * created to represent this file connection.
+     * 创建文件输出流以写入由指定的File对象表示的文件。 如果第二个参数是true ，
+     * 则字节将被写入文件的末尾而不是开头。 创建一个新的FileDescriptor对象来表示此文件连接。
      * <p>
      * First, if there is a security manager, its <code>checkWrite</code>
      * method is called with the path represented by the <code>file</code>
      * argument as its argument.
+     * 首先，如果有一个安全管理器，则调用其checkWrite方法，其中以file参数表示的路径作为参数。
      * <p>
      * If the file exists but is a directory rather than a regular file, does
      * not exist but cannot be created, or cannot be opened for any other
      * reason then a <code>FileNotFoundException</code> is thrown.
+     * 如果文件存在但是是一个目录而不是常规文件，不存在但不能创建，或者由于任何其他原因无法打开，
+     * 那么将抛出一个FileNotFoundException 。
      *
      * @param      file               the file to be opened for writing.
      * @param     append      if <code>true</code>, then bytes will be written
@@ -217,18 +239,23 @@ class FileOutputStream extends OutputStream
      * Creates a file output stream to write to the specified file
      * descriptor, which represents an existing connection to an actual
      * file in the file system.
+     * 创建文件输出流以写入指定的文件描述符，表示与文件系统中实际文件的现有连接。
      * <p>
      * First, if there is a security manager, its <code>checkWrite</code>
      * method is called with the file descriptor <code>fdObj</code>
      * argument as its argument.
+     * 首先，如果有一个安全管理器，它的checkWrite方法被调用与文件描述符fdObj参数作为其参数。
      * <p>
      * If <code>fdObj</code> is null then a <code>NullPointerException</code>
      * is thrown.
+     * 如果fdObj为null，则抛出NullPointerException 。
      * <p>
      * This constructor does not throw an exception if <code>fdObj</code>
      * is {@link java.io.FileDescriptor#valid() invalid}.
      * However, if the methods are invoked on the resulting stream to attempt
      * I/O on the stream, an <code>IOException</code> is thrown.
+     * 如果fdObj是invalid，这个构造函数不会抛出异常 。
+     * 但是，如果在结果流上调用方法来尝试流上的I / O，则会抛出一个IOException 。
      *
      * @param      fdObj   the file descriptor to be opened for writing
      * @exception  SecurityException  if a security manager exists and its
@@ -272,6 +299,7 @@ class FileOutputStream extends OutputStream
 
     /**
      * Writes the specified byte to this file output stream.
+     * 将指定的字节写入此文件输出流。 实现write方法OutputStream 。
      *
      * @param   b   the byte to be written.
      * @param   append   {@code true} if the write operation first
@@ -282,6 +310,7 @@ class FileOutputStream extends OutputStream
     /**
      * Writes the specified byte to this file output stream. Implements
      * the <code>write</code> method of <code>OutputStream</code>.
+     * 将 b.length字节从指定的字节数组写入此文件输出流。
      *
      * @param      b   the byte to be written.
      * @exception  IOException  if an I/O error occurs.
@@ -316,6 +345,7 @@ class FileOutputStream extends OutputStream
     /**
      * Writes <code>len</code> bytes from the specified byte array
      * starting at offset <code>off</code> to this file output stream.
+     * 从位于偏移量 off的指定字节数组写入 len字节到该文件输出流。
      *
      * @param      b     the data.
      * @param      off   the start offset in the data.
@@ -330,9 +360,11 @@ class FileOutputStream extends OutputStream
      * Closes this file output stream and releases any system resources
      * associated with this stream. This file output stream may no longer
      * be used for writing bytes.
+     * 关闭此文件输出流并释放与此流相关联的任何系统资源。 此文件输出流可能不再用于写入字节。
      *
      * <p> If this stream has an associated channel then the channel is closed
      * as well.
+     * 如果该流具有相关联的信道，则该信道也被关闭。
      *
      * @exception  IOException  if an I/O error occurs.
      *
@@ -360,6 +392,7 @@ class FileOutputStream extends OutputStream
 
     /**
      * Returns the file descriptor associated with this stream.
+     * 返回与此流相关联的文件描述符。
      *
      * @return  the <code>FileDescriptor</code> object that represents
      *          the connection to the file in the file system being used
@@ -378,6 +411,7 @@ class FileOutputStream extends OutputStream
     /**
      * Returns the unique {@link java.nio.channels.FileChannel FileChannel}
      * object associated with this file output stream.
+     * 返回与此文件输出流相关联的唯一的FileChannel对象。
      *
      * <p> The initial {@link java.nio.channels.FileChannel#position()
      * position} of the returned channel will be equal to the
@@ -386,6 +420,9 @@ class FileOutputStream extends OutputStream
      * Writing bytes to this stream will increment the channel's position
      * accordingly.  Changing the channel's position, either explicitly or by
      * writing, will change this stream's file position.
+     * 返回通道的初始position将等于写入文件的字节数，除非该流是附加模式，
+     * 在这种情况下，它将等于文件的大小。 将字节写入此流将相应地增加通道的位置。
+     * 通过显式地或通过写入来更改频道的位置将会改变这个流的文件位置。
      *
      * @return  the file channel associated with this file output stream
      *
@@ -405,6 +442,7 @@ class FileOutputStream extends OutputStream
      * Cleans up the connection to the file, and ensures that the
      * <code>close</code> method of this file output stream is
      * called when there are no more references to this stream.
+     * 清除与文件的连接，并确保当没有对此流的更多引用时，调用此文件输出流的 close方法。
      *
      * @exception  IOException  if an I/O error occurs.
      * @see        java.io.FileInputStream#close()

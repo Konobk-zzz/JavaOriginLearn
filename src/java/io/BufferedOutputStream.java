@@ -30,6 +30,8 @@ package java.io;
  * an output stream, an application can write bytes to the underlying
  * output stream without necessarily causing a call to the underlying
  * system for each byte written.
+ * 该类实现缓冲输出流。 通过设置这样的输出流，应用程序可以向底层输出流写入字节，
+ * 而不必为写入的每个字节导致底层系统的调用。
  *
  * @author  Arthur van Hoff
  * @since   JDK1.0
@@ -52,6 +54,7 @@ class BufferedOutputStream extends FilterOutputStream {
     /**
      * Creates a new buffered output stream to write data to the
      * specified underlying output stream.
+     * 创建一个新的缓冲输出流，以将数据写入指定的底层输出流。
      *
      * @param   out   the underlying output stream.
      */
@@ -63,6 +66,7 @@ class BufferedOutputStream extends FilterOutputStream {
      * Creates a new buffered output stream to write data to the
      * specified underlying output stream with the specified buffer
      * size.
+     * 创建一个新的缓冲输出流，以便以指定的缓冲区大小将数据写入指定的底层输出流。
      *
      * @param   out    the underlying output stream.
      * @param   size   the buffer size.
@@ -86,6 +90,7 @@ class BufferedOutputStream extends FilterOutputStream {
 
     /**
      * Writes the specified byte to this buffered output stream.
+     * 将指定的字节写入缓冲的输出流。
      *
      * @param      b   the byte to be written.
      * @exception  IOException  if an I/O error occurs.
@@ -100,6 +105,7 @@ class BufferedOutputStream extends FilterOutputStream {
     /**
      * Writes <code>len</code> bytes from the specified byte array
      * starting at offset <code>off</code> to this buffered output stream.
+     * 从指定的字节数组写入len个字节，从偏移off开始到缓冲的输出流。
      *
      * <p> Ordinarily this method stores bytes from the given array into this
      * stream's buffer, flushing the buffer to the underlying output stream as
@@ -107,6 +113,9 @@ class BufferedOutputStream extends FilterOutputStream {
      * buffer, however, then this method will flush the buffer and write the
      * bytes directly to the underlying output stream.  Thus redundant
      * <code>BufferedOutputStream</code>s will not copy data unnecessarily.
+     * 通常，该方法将给定数组的字节存储到此流的缓冲区中，根据需要将缓冲区刷新到底层输出流。
+     * 然而，如果请求的长度至少与此流的缓冲区一样大，那么这个方法将刷新缓冲区并将字节直接写入底层的输出流。
+     * 因此冗余BufferedOutputStream不会不必要地复制数据。
      *
      * @param      b     the data.
      * @param      off   the start offset in the data.
@@ -132,6 +141,7 @@ class BufferedOutputStream extends FilterOutputStream {
     /**
      * Flushes this buffered output stream. This forces any buffered
      * output bytes to be written out to the underlying output stream.
+     * 刷新缓冲输出流。 这将强制任何缓冲输出字节写入底层输出流。
      *
      * @exception  IOException  if an I/O error occurs.
      * @see        java.io.FilterOutputStream#out

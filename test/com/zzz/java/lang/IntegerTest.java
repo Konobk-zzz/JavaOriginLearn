@@ -53,6 +53,11 @@ public class IntegerTest {
 //        testMovePosition();
 //        testSignum();
 //        testReverse();
-        testByte();
+//        testByte();
+        int maxArraySize = Integer.MAX_VALUE - 8;
+        System.out.println(maxArraySize);
+        System.out.println(Integer.toBinaryString(maxArraySize));
+        System.out.println(maxArraySize << 1);
+        System.out.println(Integer.toBinaryString(maxArraySize << 1));
     }
 }
