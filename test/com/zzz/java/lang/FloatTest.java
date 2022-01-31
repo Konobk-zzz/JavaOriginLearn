@@ -3,7 +3,6 @@ package com.zzz.java.lang;
 import java.util.Objects;
 
 /**
- * @author jiaao@yscredit.com
  * @date 2021/7/5 9:28
  */
 public class FloatTest {
