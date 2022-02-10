@@ -1,7 +1,6 @@
 package com.zzz.java.lang;
 
 /**
- * @author jiaao@yscredit.com
  * @date 2021/8/19 17:26
  */
 public class CharacterTest {

@@ -1,7 +1,6 @@
 package com.zzz.java.lang;
 
 /**
- * @author jiaao@yscredit.com
  * @date 2021/7/6 10:40
  */
 public class DoubleTest {

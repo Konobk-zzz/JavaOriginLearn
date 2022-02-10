@@ -1,7 +1,6 @@
 package com.zzz.java.lang;
 
 /**
- * @author jiaao@yscredit.com
  * @date 2021/6/30 20:16
  */
 public class LongTest {
