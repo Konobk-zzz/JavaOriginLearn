@@ -28,6 +28,7 @@ package java.io;
 /**
  * This class implements a character buffer that can be used as a
  * character-input stream.
+ * 该类实现了一个字符缓冲区，可以用作字符输入流。
  *
  * @author      Herb Jellinek
  * @since       JDK1.1

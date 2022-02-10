@@ -29,20 +29,27 @@ package java.io;
 /**
  * Writes text to a character-output stream, buffering characters so as to
  * provide for the efficient writing of single characters, arrays, and strings.
+ * 将文本写入字符输出流，缓冲字符，以提供单个字符，数组和字符串的高效写入。
  *
  * <p> The buffer size may be specified, or the default size may be accepted.
  * The default is large enough for most purposes.
+ * 可以指定缓冲区大小，或者可以接受默认大小。 默认值足够大，可用于大多数用途。
  *
  * <p> A newLine() method is provided, which uses the platform's own notion of
  * line separator as defined by the system property <tt>line.separator</tt>.
  * Not all platforms use the newline character ('\n') to terminate lines.
  * Calling this method to terminate each output line is therefore preferred to
  * writing a newline character directly.
+ * 提供了一个newLine（）方法，它使用平台自己的系统属性line.separator定义的行分隔符概念。
+ * 并非所有平台都使用换行符（'\ n'）来终止行。 因此，调用此方法来终止每个输出行，因此优选直接写入换行符。
  *
  * <p> In general, a Writer sends its output immediately to the underlying
  * character or byte stream.  Unless prompt output is required, it is advisable
  * to wrap a BufferedWriter around any Writer whose write() operations may be
  * costly, such as FileWriters and OutputStreamWriters.  For example,
+ * 一般来说，Writer将其输出立即发送到底层字符或字节流。 除非需要提示输出，
+ * 否则建议将BufferedWriter包装在其write（）操作可能很昂贵的Writer上，
+ * 例如FileWriters和OutputStreamWriters。 例如，
  *
  * <pre>
  * PrintWriter out
@@ -53,6 +60,7 @@ package java.io;
  * invocation of a print() method would cause characters to be converted into
  * bytes that would then be written immediately to the file, which can be very
  * inefficient.
+ * 将缓冲PrintWriter的输出到文件。 没有缓冲，每次调用print（）方法都会使字符转换为字节，然后立即写入文件，这可能非常低效。
  *
  * @see PrintWriter
  * @see FileWriter

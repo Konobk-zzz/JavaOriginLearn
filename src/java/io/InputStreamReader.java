@@ -36,15 +36,20 @@ import sun.nio.cs.StreamDecoder;
  * java.nio.charset.Charset charset}.  The charset that it uses
  * may be specified by name or may be given explicitly, or the platform's
  * default charset may be accepted.
+ * InputStreamReader是从字节流到字符流的桥：它读取字节，并使用指定的charset将其解码为字符 。
+ * 它使用的字符集可以由名称指定，也可以被明确指定，或者可以接受平台的默认字符集。
  *
  * <p> Each invocation of one of an InputStreamReader's read() methods may
  * cause one or more bytes to be read from the underlying byte-input stream.
  * To enable the efficient conversion of bytes to characters, more bytes may
  * be read ahead from the underlying stream than are necessary to satisfy the
  * current read operation.
+ * 每个调用InputStreamReader的read（）方法之一可能会导致从底层字节输入流读取一个或多个字节。
+ * 为了使字节有效地转换为字符，可以从底层流读取比满足当前读取操作所需的更多字节。
  *
  * <p> For top efficiency, consider wrapping an InputStreamReader within a
  * BufferedReader.  For example:
+ * 为了最大的效率，请考虑在BufferedReader中包装一个InputStreamReader。 例如：
  *
  * <pre>
  * BufferedReader in
@@ -65,6 +70,7 @@ public class InputStreamReader extends Reader {
 
     /**
      * Creates an InputStreamReader that uses the default charset.
+     * 创建一个使用默认字符集的InputStreamReader。
      *
      * @param  in   An InputStream
      */
@@ -80,6 +86,7 @@ public class InputStreamReader extends Reader {
 
     /**
      * Creates an InputStreamReader that uses the named charset.
+     * 创建一个使用命名字符集的InputStreamReader。
      *
      * @param  in
      *         An InputStream
@@ -134,18 +141,23 @@ public class InputStreamReader extends Reader {
 
     /**
      * Returns the name of the character encoding being used by this stream.
+     * 返回此流使用的字符编码的名称。
      *
      * <p> If the encoding has an historical name then that name is returned;
      * otherwise the encoding's canonical name is returned.
+     * 如果编码具有历史名称，则返回该名称; 否则返回编码的规范名称。
      *
      * <p> If this instance was created with the {@link
      * #InputStreamReader(InputStream, String)} constructor then the returned
      * name, being unique for the encoding, may differ from the name passed to
      * the constructor. This method will return <code>null</code> if the
      * stream has been closed.
+     * 如果此实例是使用InputStreamReader(InputStream, String)构造函数创建的，
+     * 则返回的名称对于编码而言是唯一的，可能与传递给构造函数的名称不同。 如果流已关闭，此方法将返回null 。
      * </p>
      * @return The historical name of this encoding, or
      *         <code>null</code> if the stream has been closed
+     *         该编码的历史名称，如果流已关闭， null
      *
      * @see java.nio.charset.Charset
      *

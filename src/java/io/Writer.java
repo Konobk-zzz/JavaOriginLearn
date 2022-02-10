@@ -31,6 +31,8 @@ package java.io;
  * subclass must implement are write(char[], int, int), flush(), and close().
  * Most subclasses, however, will override some of the methods defined here in
  * order to provide higher efficiency, additional functionality, or both.
+ * 用于写入字符流的抽象类。 子类必须实现的唯一方法是write（char []，int，int），flush（）和close（）。
+ * 然而，大多数子类将覆盖这里定义的一些方法，以便提供更高的效率，附加的功能或两者。
  *
  * @see Writer
  * @see   BufferedWriter

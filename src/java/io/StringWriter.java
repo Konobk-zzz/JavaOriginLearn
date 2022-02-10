@@ -29,10 +29,12 @@ package java.io;
 /**
  * A character stream that collects its output in a string buffer, which can
  * then be used to construct a string.
+ * 在字符串缓冲区中收集其输出的字符流，然后可以用于构造字符串。
  * <p>
  * Closing a <tt>StringWriter</tt> has no effect. The methods in this class
  * can be called after the stream has been closed without generating an
  * <tt>IOException</tt>.
+ * 关闭StringWriter没有任何效果。 在流已关闭后，可以调用此类中的方法，而不生成IOException 。
  *
  * @author      Mark Reinhold
  * @since       JDK1.1

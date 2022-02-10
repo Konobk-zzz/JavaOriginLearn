@@ -36,15 +36,20 @@ import java.util.stream.StreamSupport;
 /**
  * Reads text from a character-input stream, buffering characters so as to
  * provide for the efficient reading of characters, arrays, and lines.
+ * 从字符输入流读取文本，缓冲字符，以提供字符，数组和行的高效读取。
  *
  * <p> The buffer size may be specified, or the default size may be used.  The
  * default is large enough for most purposes.
+ * 可以指定缓冲区大小，或者可以使用默认大小。 默认值足够大，可用于大多数用途。
  *
  * <p> In general, each read request made of a Reader causes a corresponding
  * read request to be made of the underlying character or byte stream.  It is
  * therefore advisable to wrap a BufferedReader around any Reader whose read()
  * operations may be costly, such as FileReaders and InputStreamReaders.  For
  * example,
+ * 通常，由读取器做出的每个读取请求将引起对底层字符或字节流的相应读取请求。
+ * 因此，建议将BufferedReader包装在其read（）操作可能昂贵的读取器上，
+ * 例如FileReaders和InputStreamReaders。 例如，
  *
  * <pre>
  * BufferedReader in
@@ -55,9 +60,12 @@ import java.util.stream.StreamSupport;
  * invocation of read() or readLine() could cause bytes to be read from the
  * file, converted into characters, and then returned, which can be very
  * inefficient.
+ * 将缓冲指定文件的输入。 没有缓冲，每次调用read（）或readLine（）可能会导致从文件中读取字节，
+ * 转换成字符，然后返回，这可能非常低效。
  *
  * <p> Programs that use DataInputStreams for textual input can be localized by
  * replacing each DataInputStream with an appropriate BufferedReader.
+ * 使用DataInputStreams进行文本输入的程序可以通过用适当的BufferedReader替换每个DataInputStream进行本地化。
  *
  * @see FileReader
  * @see InputStreamReader

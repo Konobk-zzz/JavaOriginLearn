@@ -28,6 +28,7 @@ package java.io;
 
 /**
  * Piped character-output streams.
+ * 管道字符输出流。
  *
  * @author      Mark Reinhold
  * @since       JDK1.1

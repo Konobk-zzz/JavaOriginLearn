@@ -31,10 +31,13 @@ package java.io;
  * class assume that the default character encoding and the default byte-buffer
  * size are appropriate.  To specify these values yourself, construct an
  * InputStreamReader on a FileInputStream.
+ * 阅读字符文件的便利类。 该类的构造函数假定默认字符编码和默认字节缓冲区大小是适当的。
+ * 要自己指定这些值，请在FileInputStream上构造一个InputStreamReader。
  *
  * <p><code>FileReader</code> is meant for reading streams of characters.
  * For reading streams of raw bytes, consider using a
  * <code>FileInputStream</code>.
+ * FileReader是用于读取字符流。 要读取原始字节流，请考虑使用FileInputStream 。
  *
  * @see InputStreamReader
  * @see FileInputStream

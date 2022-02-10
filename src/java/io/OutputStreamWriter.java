@@ -36,6 +36,8 @@ import sun.nio.cs.StreamEncoder;
  * java.nio.charset.Charset charset}.  The charset that it uses
  * may be specified by name or may be given explicitly, or the platform's
  * default charset may be accepted.
+ * OutputStreamWriter是字符的桥梁流以字节流：向其写入的字符编码成使用指定的字节charset 。
+ * 它使用的字符集可以由名称指定，也可以被明确指定，或者可以接受平台的默认字符集。
  *
  * <p> Each invocation of a write() method causes the encoding converter to be
  * invoked on the given character(s).  The resulting bytes are accumulated in a
@@ -43,9 +45,12 @@ import sun.nio.cs.StreamEncoder;
  * this buffer may be specified, but by default it is large enough for most
  * purposes.  Note that the characters passed to the write() methods are not
  * buffered.
+ * 每次调用write（）方法都会使编码转换器在给定字符上被调用。 所得到的字节在写入底层输出流之前累积在缓冲区中。
+ * 可以指定此缓冲区的大小，但是默认情况下它大部分用于大多数目的。 请注意，传递给write（）方法的字符不会缓冲。
  *
  * <p> For top efficiency, consider wrapping an OutputStreamWriter within a
  * BufferedWriter so as to avoid frequent converter invocations.  For example:
+ * 为了最大的效率，请考虑在BufferedWriter中包装一个OutputStreamWriter，以避免频繁的转换器调用。 例如：
  *
  * <pre>
  * Writer out
@@ -56,15 +61,19 @@ import sun.nio.cs.StreamEncoder;
  * <tt>char</tt> values: A <i>high</i> surrogate in the range '&#92;uD800' to
  * '&#92;uDBFF' followed by a <i>low</i> surrogate in the range '&#92;uDC00' to
  * '&#92;uDFFF'.
+ * 代理对是由两个char值的序列表示的字符 ：“\ uD800”到“\ uDBFF”范围内的高代理，后跟“\ uDC00”到“\ uDFFF”范围内的低代理。
  *
  * <p> A <i>malformed surrogate element</i> is a high surrogate that is not
  * followed by a low surrogate or a low surrogate that is not preceded by a
  * high surrogate.
+ * 一个畸形的替代元素是一个高替代品，其后没有高替代品的低替代品或低替代品。
  *
  * <p> This class always replaces malformed surrogate elements and unmappable
  * character sequences with the charset's default <i>substitution sequence</i>.
  * The {@linkplain java.nio.charset.CharsetEncoder} class should be used when more
  * control over the encoding process is required.
+ * 这个类总是用字符集的默认替换序列替换格式不正确的代理元素和不可映射的字符序列 。
+ * 当需要对编码过程进行更多控制时，应使用CharsetEncoder类。
  *
  * @see BufferedWriter
  * @see OutputStream

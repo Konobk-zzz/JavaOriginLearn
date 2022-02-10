@@ -28,6 +28,7 @@ package java.io;
 
 /**
  * A character stream whose source is a string.
+ * 一个字符流，其源是一个字符串。
  *
  * @author      Mark Reinhold
  * @since       JDK1.1

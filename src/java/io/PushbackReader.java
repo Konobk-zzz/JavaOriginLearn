@@ -29,6 +29,7 @@ package java.io;
 /**
  * A character-stream reader that allows characters to be pushed back into the
  * stream.
+ * 一个字符流读取器，允许将字符推回到流中。
  *
  * @author      Mark Reinhold
  * @since       JDK1.1

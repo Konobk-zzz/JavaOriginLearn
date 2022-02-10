@@ -33,6 +33,8 @@ package java.io;
  * contained stream. Subclasses of <code>FilterWriter</code>
  * should override some of these methods and may also
  * provide additional methods and fields.
+ * 用于编写过滤后的字符流的抽象类。 抽象类FilterWriter本身提供了将所有请求传递给包含流的默认方法。
+ * FilterWriter的FilterWriter应该覆盖其中一些方法，并且还可以提供其他方法和字段。
  *
  * @author      Mark Reinhold
  * @since       JDK1.1

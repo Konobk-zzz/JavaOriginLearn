@@ -44,22 +44,30 @@ import sun.reflect.misc.ReflectUtil;
  * ObjectInputStream.  Persistent storage of objects can be accomplished by
  * using a file for the stream.  If the stream is a network socket stream, the
  * objects can be reconstituted on another host or in another process.
+ * ObjectOutputStream将Java对象的原始数据类型和图形写入OutputStream。
+ * 可以使用ObjectInputStream读取（重构）对象。 可以通过使用流的文件来实现对象的持久存储。
+ * 如果流是网络套接字流，则可以在另一个主机上或另一个进程中重构对象。
  *
  * <p>Only objects that support the java.io.Serializable interface can be
  * written to streams.  The class of each serializable object is encoded
  * including the class name and signature of the class, the values of the
  * object's fields and arrays, and the closure of any other objects referenced
  * from the initial objects.
+ * 只有支持java.io.Serializable接口的对象才能写入流中。 每个可序列化对象的类被编码，
+ * 包括类的类名和签名，对象的字段和数组的值以及从初始对象引用的任何其他对象的关闭。
  *
  * <p>The method writeObject is used to write an object to the stream.  Any
  * object, including Strings and arrays, is written with writeObject. Multiple
  * objects or primitives can be written to the stream.  The objects must be
  * read back from the corresponding ObjectInputstream with the same types and
  * in the same order as they were written.
+ * 方法writeObject用于将一个对象写入流中。 任何对象，包括字符串和数组，都是用writeObject编写的。
+ * 多个对象或原语可以写入流。 必须从对应的ObjectInputstream读取对象，其类型和写入次序相同。
  *
  * <p>Primitive data types can also be written to the stream using the
  * appropriate methods from DataOutput. Strings can also be written using the
  * writeUTF method.
+ * 原始数据类型也可以使用DataOutput中的适当方法写入流中。 字符串也可以使用writeUTF方法写入。
  *
  * <p>The default serialization mechanism for an object writes the class of the
  * object, the class signature, and the values of all non-transient and
@@ -68,6 +76,9 @@ import sun.reflect.misc.ReflectUtil;
  * to a single object are encoded using a reference sharing mechanism so that
  * graphs of objects can be restored to the same shape as when the original was
  * written.
+ * 对象的默认序列化机制写入对象的类，类签名以及所有非瞬态和非静态字段的值。
+ * 引用其他对象（除了在瞬态或静态字段中）也会导致这些对象被写入。
+ * 使用引用共享机制对单个对象的多个引用进行编码，以便可以将对象的图形恢复为与原始文件相同的形状。
  *
  * <p>For example to write an object that can be read by the example in
  * ObjectInputStream:
@@ -86,6 +97,7 @@ import sun.reflect.misc.ReflectUtil;
  * <p>Classes that require special handling during the serialization and
  * deserialization process must implement special methods with these exact
  * signatures:
+ * 在序列化和反序列化过程中需要特殊处理的类必须采用具有这些精确签名的特殊方法：
  * <br>
  * <pre>
  * private void readObject(java.io.ObjectInputStream stream)
@@ -103,6 +115,9 @@ import sun.reflect.misc.ReflectUtil;
  * writing the individual fields to the ObjectOutputStream using the
  * writeObject method or by using the methods for primitive data types
  * supported by DataOutput.
+ * writeObject方法负责为其特定的类编写对象的状态，以便相应的readObject方法可以恢复它。
+ * 该方法不需要关心属于对象的超类或子类的状态。 通过使用writeObject方法或通过使用DataOutput支持的
+ * 原始数据类型的方法将各个字段写入ObjectOutputStream来保存状态。
  *
  * <p>Serialization does not write out the fields of any object that does not
  * implement the java.io.Serializable interface.  Subclasses of Objects that
@@ -112,11 +127,17 @@ import sun.reflect.misc.ReflectUtil;
  * the state of the non-serializable class. It is frequently the case that the
  * fields of that class are accessible (public, package, or protected) or that
  * there are get and set methods that can be used to restore the state.
+ * 序列化不会写出任何不实现java.io.Serializable接口的对象的字段。 不可序列化的对象的子类可以是可序列化的。
+ * 在这种情况下，非可序列化类必须有一个无参数构造函数，以允许其字段被初始化。
+ * 在这种情况下，子类有责任保存并恢复不可序列化类的状态。 通常情况下，该类的字段是可访问的（public，package或protected），
+ * 或者可以使用get和set方法来恢复状态。
  *
  * <p>Serialization of an object can be prevented by implementing writeObject
  * and readObject methods that throw the NotSerializableException.  The
  * exception will be caught by the ObjectOutputStream and abort the
  * serialization process.
+ * 可以通过实现抛出NotSerializableException的writeObject和readObject方法来防止对象的序列化。
+ * 异常将被ObjectOutputStream捕获并中止序列化过程。
  *
  * <p>Implementing the Externalizable interface allows the object to assume
  * complete control over the contents and format of the object's serialized
@@ -125,6 +146,10 @@ import sun.reflect.misc.ReflectUtil;
  * implemented by a class they can write and read their own state using all of
  * the methods of ObjectOutput and ObjectInput.  It is the responsibility of
  * the objects to handle any versioning that occurs.
+ * 实现Externalizable接口允许对象完全控制对象的序列化表单的内容和格式。
+ * 调用Externalizable接口writeExternal和readExternal的方法来保存和恢复对象的状态。
+ * 当由类实现时，他们可以使用ObjectOutput和ObjectInput的所有方法来写入和读取自己的状态。
+ * 对象处理发生的任何版本控制都是有责任的。
  *
  * <p>Enum constants are serialized differently than ordinary serializable or
  * externalizable objects.  The serialized form of an enum constant consists
@@ -138,6 +163,11 @@ import sun.reflect.misc.ReflectUtil;
  * during serialization.  Similarly, any serialPersistentFields or
  * serialVersionUID field declarations are also ignored--all enum types have a
  * fixed serialVersionUID of 0L.
+ * 枚举常数与普通可序列化或外部化对象不同的是序列化。 枚举常数的序列化形式仅由其名称组成;
+ * 不传输常数的字段值。 要序列化一个枚举常量，ObjectOutputStream会写入常数名称方法返回的字符串。
+ * 像其他可序列化或可外部化的对象一样，枚举常量可以作为随后在序列化流中出现的反向引用的目标。
+ * 枚举常数序列化的过程无法定制; 在序列化期间，将忽略由枚举类型定义的任何类特定的writeObject和writeReplace方法。
+ * 类似地，任何serialPersistentFields或serialVersionUID字段声明也被忽略 - 所有枚举类型都有一个固定的serialVersionUID为0L。
  *
  * <p>Primitive data, excluding serializable fields and externalizable data, is
  * written to the ObjectOutputStream in block-data records. A block data record
@@ -149,6 +179,11 @@ import sun.reflect.misc.ReflectUtil;
  * block-data mode.  Calls to the ObjectOutputStream methods writeObject,
  * defaultWriteObject and writeFields initially terminate any existing
  * block-data record.
+ * 原始数据（不包括可序列化字段和外部化数据）在块数据记录中写入ObjectOutputStream。
+ * 块数据记录由报头和数据组成。 块数据头由标记和跟随标题的字节数组成。
+ * 连续的原始数据写入被合并成一个块数据记录。 用于块数据记录的阻塞因子将是1024字节。
+ * 每个块数据记录将被填充到1024个字节，或者每当块数据模式终止时都被写入。
+ * 调用ObjectOutputStream方法writeObject，defaultWriteObject和writeFields最初终止任何现有的块数据记录。
  *
  * @author      Mike Warres
  * @author      Roger Riggs
@@ -1113,7 +1148,7 @@ public class ObjectOutputStream
             if ((obj = subs.lookup(obj)) == null) {
                 writeNull();
                 return;
-            } else if (!unshared && (h = handles.lookup(obj)) != -1) {
+            } else if (!unshared && (h = handles.lookup(obj)) != -1) { // 写入一个指向某个已写入的对象标记
                 writeHandle(h);
                 return;
             } else if (obj instanceof Class) {
@@ -2239,6 +2274,7 @@ public class ObjectOutputStream
     /**
      * Lightweight identity hash table which maps objects to integer handles,
      * assigned in ascending order.
+     * 轻量级的对象到整型的句柄映射，升序指定序号
      */
     private static class HandleTable {
 

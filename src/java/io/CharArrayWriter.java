@@ -31,10 +31,13 @@ import java.util.Arrays;
  * This class implements a character buffer that can be used as an Writer.
  * The buffer automatically grows when data is written to the stream.  The data
  * can be retrieved using toCharArray() and toString().
+ * 该类实现了可以用作Writer的字符缓冲区。 当数据写入流时，缓冲区会自动增长。
+ * 可以使用toCharArray（）和toString（）检索数据。
  * <P>
  * Note: Invoking close() on this class has no effect, and methods
  * of this class can be called after the stream has closed
  * without generating an IOException.
+ * 注意：在此类上调用close（）没有任何效果，并且流已关闭而不生成IOException时可以调用此类的方法。
  *
  * @author      Herb Jellinek
  * @since       JDK1.1

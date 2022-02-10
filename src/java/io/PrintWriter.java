@@ -37,16 +37,21 @@ import java.nio.charset.UnsupportedCharsetException;
  * class implements all of the <tt>print</tt> methods found in {@link
  * PrintStream}.  It does not contain methods for writing raw bytes, for which
  * a program should use unencoded byte streams.
+ * 将对象的格式表示打印到文本输出流。 这个类实现了全部在发现print种方法PrintStream 。
+ * 它不包含用于编写原始字节的方法，程序应使用未编码的字节流。
  *
  * <p> Unlike the {@link PrintStream} class, if automatic flushing is enabled
  * it will be done only when one of the <tt>println</tt>, <tt>printf</tt>, or
  * <tt>format</tt> methods is invoked, rather than whenever a newline character
  * happens to be output.  These methods use the platform's own notion of line
  * separator rather than the newline character.
+ * 不像PrintStream类，如果启用自动刷新，它只会在调用的println，printf，或format方法来完成，
+ * 而不是当一个换行符恰好是输出。 这些方法使用平台自己的行分隔符而不是换行符。
  *
  * <p> Methods in this class never throw I/O exceptions, although some of its
  * constructors may.  The client may inquire as to whether any errors have
  * occurred by invoking {@link #checkError checkError()}.
+ * 这个类中的方法不会抛出I / O异常，尽管它的一些构造函数可能。 客户可以通过调用checkError()查询是否发生错误。
  *
  * @author      Frank Yellin
  * @author      Mark Reinhold

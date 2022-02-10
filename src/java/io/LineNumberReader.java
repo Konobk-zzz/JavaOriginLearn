@@ -31,6 +31,7 @@ package java.io;
  * class defines methods {@link #setLineNumber(int)} and {@link
  * #getLineNumber()} for setting and getting the current line number
  * respectively.
+ * 缓冲字符输入流，跟踪行号。 该类定义方法setLineNumber(int)和getLineNumber()用于分别设置和获得当前行号。
  *
  * <p> By default, line numbering begins at 0. This number increments at every
  * <a href="#lt">line terminator</a> as the data is read, and can be changed
@@ -38,10 +39,14 @@ package java.io;
  * <tt>setLineNumber(int)</tt> does not actually change the current position in
  * the stream; it only changes the value that will be returned by
  * <tt>getLineNumber()</tt>.
+ * 默认情况下，行编号从0开始。随着数据的读取，每个line terminator的数字递增，
+ * 可以通过调用setLineNumber(int)进行更改。 但是请注意， setLineNumber(int)实际上并不改变流中的当前位置;
+ * 它只会更改getLineNumber()将返回的值 。
  *
  * <p> A line is considered to be <a name="lt">terminated</a> by any one of a
  * line feed ('\n'), a carriage return ('\r'), or a carriage return followed
  * immediately by a linefeed.
+ * 行被认为是terminated一个换行（“\ n”）中的任何一个，回车（“\ r”），或回车一个换行符紧跟。
  *
  * @author      Mark Reinhold
  * @since       JDK1.1
@@ -88,6 +93,7 @@ public class LineNumberReader extends BufferedReader {
 
     /**
      * Set the current line number.
+     * 设置当前行号。
      *
      * @param  lineNumber
      *         An int specifying the line number
@@ -100,6 +106,7 @@ public class LineNumberReader extends BufferedReader {
 
     /**
      * Get the current line number.
+     * 获取当前行号。
      *
      * @return  The current line number
      *
