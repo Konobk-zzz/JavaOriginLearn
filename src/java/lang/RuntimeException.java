@@ -29,12 +29,16 @@ package java.lang;
  * {@code RuntimeException} is the superclass of those
  * exceptions that can be thrown during the normal operation of the
  * Java Virtual Machine.
+ * RuntimeException是在Java虚拟机的正常操作期间可以抛出的那些异常的超类。
  *
  * <p>{@code RuntimeException} and its subclasses are <em>unchecked
  * exceptions</em>.  Unchecked exceptions do <em>not</em> need to be
  * declared in a method or constructor's {@code throws} clause if they
  * can be thrown by the execution of the method or constructor and
  * propagate outside the method or constructor boundary.
+ * RuntimeException及其子类是未经检查的异常 。
+ * unchecked异常不需要在方法或构造函数的拟申报throws条款，
+ * 如果他们可以通过该方法或构造函数的执行被抛出和方法或构造边界之外传播。
  *
  * @author  Frank Yellin
  * @jls 11.2 Compile-Time Checking of Exceptions

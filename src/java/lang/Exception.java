@@ -29,6 +29,7 @@ package java.lang;
  * The class {@code Exception} and its subclasses are a form of
  * {@code Throwable} that indicates conditions that a reasonable
  * application might want to catch.
+ * 类异常及其子类是形式Throwable指示合理的应用程序想要捕获的条件。
  *
  * <p>The class {@code Exception} and any subclasses that are not also
  * subclasses of {@link RuntimeException} are <em>checked
@@ -36,6 +37,9 @@ package java.lang;
  * method or constructor's {@code throws} clause if they can be thrown
  * by the execution of the method or constructor and propagate outside
  * the method or constructor boundary.
+ * 异常类和任何不是RuntimeException的子类的子类都是检查异常 。
+ * 检查的异常需要在方法或构造函数的throws子句中声明，
+ * 如果它们可以通过执行方法或构造函数抛出，并在方法或构造函数边界之外传播。
  *
  * @author  Frank Yellin
  * @see     java.lang.Error
